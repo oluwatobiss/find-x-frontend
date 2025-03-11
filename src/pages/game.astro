@@ -1,6 +1,7 @@
 ---
 import "./src/styles/global.css";
 import GameImage from "../components/GameImage";
+import ContextMenu from "../components/ContextMenu";
 ---
 
 <!doctype html>
@@ -13,6 +14,7 @@ import GameImage from "../components/GameImage";
     <title>Find X</title>
   </head>
   <body>
+    <ContextMenu client:load />
     <GameImage client:load />
   </body>
 </html>

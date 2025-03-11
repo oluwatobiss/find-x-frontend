@@ -1,10 +1,14 @@
 const itemsToFind = [
-  { name: "American football", fileName: "american-football.png" },
-  { name: "Carrot", fileName: "carrot.png" },
-  { name: "Hamburger", fileName: "hamburger.png" },
-  { name: "Pack of fries", fileName: "french-fries.png" },
-  { name: "Pineapple", fileName: "pineapple.png" },
-  { name: "Pizza", fileName: "pizza.png" },
+  {
+    name: "American football",
+    fileName: "american-football",
+    fileExtension: "png",
+  },
+  { name: "Carrot", fileName: "carrot", fileExtension: "png" },
+  { name: "Hamburger", fileName: "hamburger", fileExtension: "png" },
+  { name: "Pack of fries", fileName: "french-fries", fileExtension: "png" },
+  { name: "Pineapple", fileName: "pineapple", fileExtension: "png" },
+  { name: "Pizza", fileName: "pizza", fileExtension: "png" },
 ];
 
 export default itemsToFind;
