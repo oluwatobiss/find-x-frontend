@@ -6,7 +6,9 @@ export default function ContextMenu() {
   useEffect(() => {
     async function createMenuItems() {
       const menuItems = itemsToFind.map(async (item) => {
-        const itemImage = await import(`../assets/images/${item.fileName}.png`);
+        const itemImage = await import(
+          `../assets/images/${item.fileName}.${item.fileExtension}`
+        );
         return (
           <div
             className="context-menu-item clickable-context"
