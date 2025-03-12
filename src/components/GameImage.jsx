@@ -1,25 +1,32 @@
+import { useRef } from "react";
+import ContextMenu from "./ContextMenu";
 import showContextMenu from "../showContextMenu";
 import donutPile from "../assets/images/donut-pile.jpg";
 
-function hideContextMenu(e) {
-  e.preventDefault();
-  const contextMenu = document.getElementById("context-menu");
-  contextMenu.classList.remove("visible");
-  contextMenu.classList.add("invisible");
-}
-
 export default function GameImage() {
+  const contextMenuRef = useRef(null);
+
   function showContextMenuAtClickedSpot(e) {
     const isLeftMouseDown = e.button === 0;
     isLeftMouseDown && showContextMenu(e);
   }
+
+  function hideContextMenu(e) {
+    e.preventDefault();
+    contextMenuRef.current.classList.remove("visible");
+    contextMenuRef.current.classList.add("invisible");
+  }
+
   return (
-    <img
-      onMouseDown={showContextMenuAtClickedSpot}
-      onContextMenu={hideContextMenu}
-      src={donutPile.src}
-      alt="Donut pile"
-      width={"100%"}
-    />
+    <>
+      <ContextMenu ref={contextMenuRef} />
+      <img
+        onMouseDown={showContextMenuAtClickedSpot}
+        onContextMenu={hideContextMenu}
+        src={donutPile.src}
+        alt="Donut pile"
+        width={"100%"}
+      />
+    </>
   );
 }

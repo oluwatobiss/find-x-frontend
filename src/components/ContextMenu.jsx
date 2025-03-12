@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import itemsToFind from "../itemsToFind";
 
-export default function ContextMenu() {
+export default function ContextMenu({ ref }) {
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
     async function createMenuItems() {
@@ -33,6 +33,7 @@ export default function ContextMenu() {
     <article
       id="context-menu"
       className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
+      ref={ref}
     >
       <span
         title="Close"
