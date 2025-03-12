@@ -30,7 +30,10 @@ export default function ContextMenu() {
     createMenuItems();
   }, []);
   return (
-    <article className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm">
+    <article
+      id="context-menu"
+      className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
+    >
       <span
         title="Close"
         className="float-right pt-[7px] px-[7px] cursor-pointer"
