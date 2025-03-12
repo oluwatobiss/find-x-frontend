@@ -3,34 +3,24 @@ import ContextMenu from "./ContextMenu";
 import showContextMenu from "../showContextMenu";
 import donutPile from "../assets/images/donut-pile.jpg";
 
-function showTargetingBox(e) {
-  const targetingBox = document.getElementById("targeting-box");
-
-  // prettier-ignore
-  // Move targeting box to its new left position:
-  targetingBox.style.left = `${e.clientX - (targetingBox.clientWidth / 2)}px`;
-
-  // prettier-ignore
-  // Move targeting box to its new top position:
-  targetingBox.style.top = `${e.clientY - (targetingBox.clientHeight / 2)}px`;
-
-  // Remove 'invisible' class from the previously active targeting box:
-  targetingBox.classList.remove("invisible");
-
-  // Add 'visible' class to the new targeting box:
-  targetingBox.classList.add("visible");
-}
-
-function hideTargetingBox() {
-  const targetingBox = document.getElementById("targeting-box");
-  targetingBox.classList.remove("visible");
-  targetingBox.classList.add("invisible");
-}
-
 export default function GameElements() {
   const contextMenuRef = useRef(null);
+  const targetingBoxRef = useRef(null);
 
-  function showContextMenuAtClickedSpot(e) {
+  function showTargetingBox(e) {
+    // prettier-ignore
+    // Move targeting box to its new left position:
+    targetingBoxRef.current.style.left = `${e.clientX - (targetingBoxRef.current.clientWidth / 2)}px`;
+    // prettier-ignore
+    // Move targeting box to its new top position:
+    targetingBoxRef.current.style.top = `${e.clientY - (targetingBoxRef.current.clientHeight / 2)}px`;
+    // Remove 'invisible' class from the previously active targeting box:
+    targetingBoxRef.current.classList.remove("invisible");
+    // Add 'visible' class to the new targeting box:
+    targetingBoxRef.current.classList.add("visible");
+  }
+
+  function showContextBoxesAtClickedSpot(e) {
     const isLeftMouseDown = e.button === 0;
     if (isLeftMouseDown) {
       showContextMenu(e);
@@ -38,11 +28,12 @@ export default function GameElements() {
     }
   }
 
-  function hideContextMenu(e) {
+  function hideContextBoxes(e) {
     e.preventDefault();
-    hideTargetingBox();
     contextMenuRef.current.classList.remove("visible");
     contextMenuRef.current.classList.add("invisible");
+    targetingBoxRef.current.classList.remove("visible");
+    targetingBoxRef.current.classList.add("invisible");
   }
 
   return (
@@ -51,10 +42,11 @@ export default function GameElements() {
       <div
         id="targeting-box"
         className="fixed z-30 size-10 bg-red-500/50 border-4 border-red-950 border-dashed rounded-full invisible"
+        ref={targetingBoxRef}
       ></div>
       <img
-        onMouseDown={showContextMenuAtClickedSpot}
-        onContextMenu={hideContextMenu}
+        onMouseDown={showContextBoxesAtClickedSpot}
+        onContextMenu={hideContextBoxes}
         src={donutPile.src}
         alt="Donut pile"
         width={"100%"}
