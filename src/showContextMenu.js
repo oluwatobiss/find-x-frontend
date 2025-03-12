@@ -6,11 +6,11 @@ export default function showContextMenu(e) {
   const { clientX: mouseXViewportPosition, clientY: mouseYViewportPosition } =
     e;
 
-  // Define context menu's left and top positions:
+  // Define context menu's new left and top positions:
   const { contextMenuLeftPosition, contextMenuTopPosition } =
     defineContextMenuPosition(mouseXViewportPosition, mouseYViewportPosition);
 
-  // Move context menu to its left and top positions:
+  // Move context menu to its new left and top positions:
   contextMenu.style.left = `${contextMenuLeftPosition}px`;
   contextMenu.style.top = `${contextMenuTopPosition}px`;
 
