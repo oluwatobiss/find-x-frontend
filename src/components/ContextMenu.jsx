@@ -35,13 +35,13 @@ export default function ContextMenu({ ref }) {
       className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
       ref={ref}
     >
-      <span
-        title="Close"
-        className="float-right pt-[7px] px-[7px] cursor-pointer"
-      >
-        ❌
-      </span>
-      <div className="clear-right">{menuItems}</div>
+      <section className="py-[7px] px-[13px] flex justify-between">
+        <span className="text-[#eee]">Find...</span>
+        <span title="Close" className="cursor-pointer">
+          ❌
+        </span>
+      </section>
+      <section>{menuItems}</section>
     </article>
   );
 }
