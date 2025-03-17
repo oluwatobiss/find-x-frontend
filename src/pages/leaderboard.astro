@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Top 10 Leaderboard</h1>
+  <main id="leaderboard">
+    <table class="w-full">
+      <thead class="border-b">
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Time</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-table-body"></tbody>
+    </table>
+  </main>
+  <footer>
+    <a href="/game">Play game</a> | <a href="/">Return Home</a>
+  </footer>
+</Layout>
