@@ -1,0 +1,10 @@
+---
+import SignUpForm from "../components/SignUpForm";
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "Sign up | StaffBlog";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>Sign up</h1>
+  <SignUpForm client:only="react" />
+</Layout>
