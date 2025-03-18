@@ -1,0 +1,10 @@
+---
+import LoginForm from "../components/LoginForm";
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "Log in | StaffBlog";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>Log in</h1>
+  <LoginForm client:load />
+</Layout>
