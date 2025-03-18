@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AddNewImage from "../components/AddImage";
+const pageTitle = "Add New Image | Find X";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>Add Image</h1>
+  <AddNewImage client:only="react" />
+</Layout>

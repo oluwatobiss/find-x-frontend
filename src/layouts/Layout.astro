@@ -1,5 +1,6 @@
 ---
 import "./src/styles/global.css";
+const { pageTitle } = Astro.props;
 ---
 
 <!doctype html>
@@ -9,7 +10,7 @@ import "./src/styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>{pageTitle}</title>
   </head>
   <body
     class="my-0 m-auto w-full max-w-[80ch] p-10 [&>h1]:text-4xl [&>h1]:font-bold [&>h1]:text-center [&>h1]:my-4"

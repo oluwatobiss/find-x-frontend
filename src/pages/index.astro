@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const pageTitle = "Home | Find X";
 ---
 
-<Layout>
+<Layout pageTitle={pageTitle}>
   <h1>Welcome to the Find X Game!</h1>
   <main class="flex justify-center">
     <ul>
@@ -11,6 +12,7 @@ import Layout from "../layouts/Layout.astro";
       <li><a href="/sign-up">Sign up</a></li>
       <li><a href="/log-in">Log in</a></li>
       <li><a href="/dashboard">Dashbord</a></li>
+      <li><a href="/add-image">Add image</a></li>
     </ul>
   </main>
 </Layout>
