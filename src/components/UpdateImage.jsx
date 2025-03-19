@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddImage() {
+export default function UpdateImage() {
   const [imageName, setImageName] = useState("");
   const [url, setUrl] = useState("");
   const [itemsData, setItemsData] = useState([createItemData()]);

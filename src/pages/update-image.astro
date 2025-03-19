@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import UpdateImageData from "../components/UpdateImage";
+const pageTitle = "Update Image Data | Find X";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>Update Image Data</h1>
+  <UpdateImageData client:only="react" />
+</Layout>
