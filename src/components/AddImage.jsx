@@ -61,17 +61,14 @@ export default function LoginForm() {
 
   function updateItemsData(event, index) {
     const itemsData_ = [...itemsData];
-    console.log(itemsData_);
-    console.log(itemsData_[index]);
     itemsData_[index][event.target.name] = event.target.value;
     setItemsData(itemsData_);
   }
 
-  const itemFieldsets = itemsData.map((data, index) => {
-    console.log(data.id);
-    return (
-      <fieldset key={data.id} id={data.id}>
-        <legend>Item {index + 1}'s Info</legend>
+  const itemFieldsets = itemsData.map((data, index) => (
+    <section key={data.id}>
+      <fieldset>
+        <legend>Item {index + 1}</legend>
         <label>
           Name
           <input
@@ -83,9 +80,9 @@ export default function LoginForm() {
             required
           />
         </label>
-        <div>Provide item {index + 1}'s position details</div>
+        <div>Item {index + 1}'s pixel location</div>
         <label>
-          Center-X
+          Center-X (px)
           <input
             className="text-input"
             type="number"
@@ -96,7 +93,7 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          Center-Y
+          Center-Y (px)
           <input
             className="text-input"
             type="number"
@@ -107,7 +104,7 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          Start-X
+          Start-X (px)
           <input
             className="text-input"
             type="number"
@@ -118,7 +115,7 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          Start-Y
+          Start-Y (px)
           <input
             className="text-input"
             type="number"
@@ -129,7 +126,7 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          End-X
+          End-X (px)
           <input
             className="text-input"
             type="number"
@@ -140,7 +137,7 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          End-Y
+          End-Y (px)
           <input
             className="text-input"
             type="number"
@@ -150,10 +147,27 @@ export default function LoginForm() {
             required
           />
         </label>
-        {/* {showErrorFor("imageName")} */}
       </fieldset>
-    );
-  });
+      {itemsData.length > 1 && (
+        <button
+          type="button"
+          onClick={() =>
+            setItemsData(itemsData.filter((item) => item.id !== data.id))
+          }
+          className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
+        >
+          Remove {data.name ? data.name : "item"}
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={() => setItemsData([...itemsData, createItemData()])}
+        className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
+      >
+        Add new item
+      </button>
+    </section>
+  ));
 
   return (
     <>
@@ -184,25 +198,12 @@ export default function LoginForm() {
           />
           {/* {showErrorFor("url")} */}
         </div>
-        <div>
-          <label htmlFor="number">Number of items to find</label>
-          <input
-            type="number"
-            name="number"
-            id="number"
-            value={itemsData.length}
-            min="1"
-            onChange={() => setItemsData([...itemsData, createItemData()])}
-            required
-          />
-          {/* {showErrorFor("itemsQty")} */}
-        </div>
         {itemFieldsets}
         <button
           type="submit"
           className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
         >
-          Log in
+          Add image
         </button>
       </form>
     </>
