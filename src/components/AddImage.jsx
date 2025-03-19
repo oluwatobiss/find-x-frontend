@@ -81,6 +81,15 @@ export default function LoginForm() {
             required
           />
         </label>
+        <label className="w-full">
+          Item image's URL
+          <input
+            type="url"
+            name="itemImageUrl"
+            value={data.name}
+            onChange={(e) => updateItemsData(e, index)}
+          />
+        </label>
         <div className="pt-5 text-sm uppercase font-semibold">
           Pixel location
         </div>
