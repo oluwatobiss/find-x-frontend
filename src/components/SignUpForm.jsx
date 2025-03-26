@@ -10,40 +10,43 @@ export default function SignUpForm() {
   const [adminCode, setAdminCode] = useState("");
   const [errors, setErrors] = useState([]);
 
-  // async function registerUser(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.PUBLIC_BACKEND_URI}/users`,
-  //       {
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //           firstName,
-  //           lastName,
-  //           username,
-  //           email,
-  //           password,
-  //           admin,
-  //           adminCode,
-  //         }),
-  //         headers: { "Content-type": "application/json; charset=UTF-8" },
-  //       }
-  //     );
-  //     const userData = await response.json();
-  //     userData.errors?.length
-  //       ? setErrors(userData.errors)
-  //       : (window.location.href = "/");
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       console.error(error.message);
-  //     }
-  //   }
-  // }
+  async function registerUser(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_BACKEND_URI}/users`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            username,
+            email,
+            password,
+            admin,
+            adminCode,
+          }),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        }
+      );
+      const userData = await response.json();
+      console.log("=== registerUser in SignUpForm component ===");
+      console.log(userData);
 
-  // function updateAdminCode(e) {
-  //   errors.length && setErrors([]);
-  //   setAdminCode(e.target.value);
-  // }
+      userData.errors?.length
+        ? setErrors(userData.errors)
+        : (window.location.href = "/");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  function updateAdminCode(e) {
+    errors.length && setErrors([]);
+    setAdminCode(e.target.value);
+  }
 
   // function showErrorFor(field) {
   //   return errors.find((c) => c.path === field) ? (
@@ -54,8 +57,10 @@ export default function SignUpForm() {
   // }
 
   return (
-    // <form onSubmit={registerUser}>
-    <form className="[&_.text-input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_.text-input-label]:mt-3">
+    <form
+      className="[&_.text-input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_.text-input-label]:mt-3"
+      onSubmit={registerUser}
+    >
       <div>
         <label className="text-input-label" htmlFor="firstName">
           First name
