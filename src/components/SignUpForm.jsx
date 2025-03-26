@@ -48,13 +48,15 @@ export default function SignUpForm() {
     setAdminCode(e.target.value);
   }
 
-  // function showErrorFor(field) {
-  //   return errors.find((c) => c.path === field) ? (
-  //     <div className="error">{errors.find((c) => c.path === field).msg}</div>
-  //   ) : (
-  //     ""
-  //   );
-  // }
+  function showErrorFor(field) {
+    return errors.find((error) => error.path === field) ? (
+      <div className="mb-2 text-sm text-red-500">
+        {errors.find((error) => error.path === field).msg}
+      </div>
+    ) : (
+      ""
+    );
+  }
 
   return (
     <form
@@ -74,7 +76,7 @@ export default function SignUpForm() {
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
-        {/* {showErrorFor("firstName")} */}
+        {showErrorFor("firstName")}
       </div>
       <div>
         <label className="text-input-label" htmlFor="lastName">
@@ -89,7 +91,7 @@ export default function SignUpForm() {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
-        {/* {showErrorFor("lastName")} */}
+        {showErrorFor("lastName")}
       </div>
       <div>
         <label className="text-input-label" htmlFor="username">
@@ -104,7 +106,7 @@ export default function SignUpForm() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-        {/* {showErrorFor("username")} */}
+        {showErrorFor("username")}
       </div>
       <div>
         <label className="text-input-label" htmlFor="email">
@@ -119,7 +121,7 @@ export default function SignUpForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        {/* {showErrorFor("email")} */}
+        {showErrorFor("email")}
       </div>
       <div>
         <label className="text-input-label" htmlFor="password">
@@ -134,7 +136,7 @@ export default function SignUpForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {/* {showErrorFor("password")} */}
+        {showErrorFor("password")}
       </div>
       <div className="mt-3 flex items-center gap-3">
         <label htmlFor="adminCheckbox">Admin?</label>
@@ -160,7 +162,7 @@ export default function SignUpForm() {
             onChange={updateAdminCode}
             required
           />
-          {/* {showErrorFor("adminCode")} */}
+          {showErrorFor("adminCode")}
         </div>
       ) : (
         ""
