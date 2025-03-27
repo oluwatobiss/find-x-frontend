@@ -30,9 +30,9 @@ export default function LoginForm() {
   }
 
   function showErrorFor(field) {
-    return errors.find((error) => error.field === field) ? (
+    return errors.find((error) => error.path === field) ? (
       <div className="mb-2 text-sm text-red-500">
-        {errors.find((error) => error.field === field).msg}
+        {errors.find((error) => error.path === field).msg}
       </div>
     ) : (
       ""
