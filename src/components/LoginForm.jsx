@@ -5,50 +5,46 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  // async function authenticateUser(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.PUBLIC_BACKEND_URI}/auths`,
-  //       {
-  //         method: "POST",
-  //         body: JSON.stringify({ email, password }),
-  //         headers: { "Content-type": "application/json; charset=UTF-8" },
-  //       }
-  //     );
-  //     const userData = await response.json();
-  //     localStorage.setItem("apiPoweredBlogToken", userData.token);
-  //     localStorage.setItem(
-  //       "apiPoweredBlogUserData",
-  //       JSON.stringify(userData.payload)
-  //     );
-  //     if (iframeUseRef.current) {
-  //       const targetOrigin = fansEndUri;
-  //       const iframeWindow = iframeUseRef.current.contentWindow;
-  //       iframeWindow.postMessage(userData, targetOrigin);
-  //     }
-  //     userData.errors?.length
-  //       ? setErrors(userData.errors)
-  //       : (window.location.href = "/");
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       console.error(error.message);
-  //     }
-  //   }
-  // }
+  async function authenticateUser(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_BACKEND_URI}/auths`,
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        }
+      );
+      const userData = await response.json();
+      localStorage.setItem("findXToken", userData.token);
+      localStorage.setItem("findXUserData", JSON.stringify(userData.payload));
+      userData.errors?.length
+        ? setErrors(userData.errors)
+        : (window.location.href = "/");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
 
-  // function showErrorFor(field) {
-  //   return errors.find((c) => c.path === field) ? (
-  //     <div className="error">{errors.find((c) => c.path === field).msg}</div>
-  //   ) : (
-  //     ""
-  //   );
-  // }
+  function showErrorFor(field) {
+    return errors.find((error) => error.field === field) ? (
+      <div className="mb-2 text-sm text-red-500">
+        {errors.find((error) => error.field === field).msg}
+      </div>
+    ) : (
+      ""
+    );
+  }
 
   return (
     <>
-      {/* <form onSubmit={authenticateUser}> */}
-      <form className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3">
+      <form
+        className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3"
+        onSubmit={authenticateUser}
+      >
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -59,7 +55,7 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          {/* {showErrorFor("email")} */}
+          {showErrorFor("email")}
         </div>
         <div>
           <label htmlFor="password">Password</label>
@@ -71,7 +67,7 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {/* {showErrorFor("password")} */}
+          {showErrorFor("password")}
         </div>
         <button
           type="submit"
