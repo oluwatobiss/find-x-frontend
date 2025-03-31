@@ -1,4 +1,5 @@
 ---
+import Header from "../components/Header.astro";
 import "./src/styles/global.css";
 const { pageTitle } = Astro.props;
 ---
@@ -15,6 +16,7 @@ const { pageTitle } = Astro.props;
   <body
     class="my-0 m-auto w-full max-w-[80ch] p-10 [&>h1]:my-[0.67em] [&>h1]:text-[2em] [&>h1]:font-bold [&>h1]:text-center [&_h2]:my-[0.83em] [&_h2]:text-[1.5em] [&_h2]:font-bold"
   >
+    <Header />
     <slot />
   </body>
 </html>
