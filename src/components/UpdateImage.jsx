@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-export default function UpdateImage() {
-  const [imageName, setImageName] = useState("");
-  const [url, setUrl] = useState("");
-  const [itemsData, setItemsData] = useState([createItemData()]);
+export default function AddImage() {
+  const imageDataJson = useRef(localStorage.getItem("findXImageToEdit"));
+  const imageData = imageDataJson.current && JSON.parse(imageDataJson.current);
+  const [imageName, setImageName] = useState(imageData.imageName);
+  const [imageUrl, setImageUrl] = useState(imageData.imageUrl);
+  const [itemsData, setItemsData] = useState(imageData.itemsData);
   const [errors, setErrors] = useState([]);
 
   function createItemData() {
     return {
       id: crypto.randomUUID(),
-      name: "",
+      itemName: "",
+      itemImageUrl: "",
       centerX: "",
       centerY: "",
       startX: "",
@@ -19,45 +22,47 @@ export default function UpdateImage() {
     };
   }
 
-  // async function authenticateUser(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.PUBLIC_BACKEND_URI}/auths`,
-  //       {
-  //         method: "POST",
-  //         body: JSON.stringify({ email, password }),
-  //         headers: { "Content-type": "application/json; charset=UTF-8" },
-  //       }
-  //     );
-  //     const userData = await response.json();
-  //     localStorage.setItem("apiPoweredBlogToken", userData.token);
-  //     localStorage.setItem(
-  //       "apiPoweredBlogUserData",
-  //       JSON.stringify(userData.payload)
-  //     );
-  //     if (iframeUseRef.current) {
-  //       const targetOrigin = fansEndUri;
-  //       const iframeWindow = iframeUseRef.current.contentWindow;
-  //       iframeWindow.postMessage(userData, targetOrigin);
-  //     }
-  //     userData.errors?.length
-  //       ? setErrors(userData.errors)
-  //       : (window.location.href = "/");
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       console.error(error.message);
-  //     }
-  //   }
-  // }
+  async function submitImageDataUpdates(e) {
+    e.preventDefault();
 
-  // function showErrorFor(field) {
-  //   return errors.find((c) => c.path === field) ? (
-  //     <div className="error">{errors.find((c) => c.path === field).msg}</div>
-  //   ) : (
-  //     ""
-  //   );
-  // }
+    console.log({ imageName, imageUrl, itemsData });
+
+    try {
+      const userToken = localStorage.getItem("findXToken");
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_BACKEND_URI}/images/${imageData.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ imageName, imageUrl, itemsData }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      const imageDataResponse = await response.json();
+      console.log("=== submitImageDataUpdates in AddImage component ===");
+      console.log(imageDataResponse);
+
+      imageDataResponse.errors?.length
+        ? setErrors(imageDataResponse.errors)
+        : (window.location.href = "/");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  function showErrorFor(field) {
+    return errors.find((error) => error.path === field) ? (
+      <div className="mb-2 text-sm text-red-500">
+        {errors.find((error) => error.path === field).msg}
+      </div>
+    ) : (
+      ""
+    );
+  }
 
   function updateItemsData(event, index) {
     const itemsData_ = [...itemsData];
@@ -75,20 +80,26 @@ export default function UpdateImage() {
           Name
           <input
             type="text"
-            name="name"
-            value={data.name}
+            name="itemName"
+            value={data.itemName}
             onChange={(e) => updateItemsData(e, index)}
             required
           />
+          {errors.find(
+            (error) => error.path === `itemsData[${index}].itemName`
+          ) && showErrorFor(`itemsData[${index}].itemName`)}
         </label>
         <label className="w-full">
           Item image's URL
           <input
             type="url"
             name="itemImageUrl"
-            value={data.name}
+            value={data.itemImageUrl}
             onChange={(e) => updateItemsData(e, index)}
           />
+          {errors.find(
+            (error) => error.path === `itemsData[${index}].itemImageUrl`
+          ) && showErrorFor(`itemsData[${index}].itemImageUrl`)}
         </label>
         <div className="pt-5 text-sm uppercase font-semibold">
           Pixel location
@@ -104,6 +115,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].centerX`
+            ) && showErrorFor(`itemsData[${index}].centerX`)}
           </label>
           <label>
             Center-Y (px)
@@ -115,6 +129,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].centerY`
+            ) && showErrorFor(`itemsData[${index}].centerY`)}
           </label>
         </div>
         <div className="flex gap-x-3">
@@ -128,6 +145,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].startX`
+            ) && showErrorFor(`itemsData[${index}].startX`)}
           </label>
           <label>
             Start-Y (px)
@@ -139,6 +159,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].startY`
+            ) && showErrorFor(`itemsData[${index}].startY`)}
           </label>
         </div>
         <div className="flex gap-x-3">
@@ -152,6 +175,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].endX`
+            ) && showErrorFor(`itemsData[${index}].endX`)}
           </label>
           <label>
             End-Y (px)
@@ -163,6 +189,9 @@ export default function UpdateImage() {
               onChange={(e) => updateItemsData(e, index)}
               required
             />
+            {errors.find(
+              (error) => error.path === `itemsData[${index}].endY`
+            ) && showErrorFor(`itemsData[${index}].endY`)}
           </label>
         </div>
         {itemsData.length > 1 && (
@@ -182,32 +211,36 @@ export default function UpdateImage() {
 
   return (
     <>
-      {/* <form onSubmit={authenticateUser}> */}
-      <form className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3">
+      <form
+        className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3"
+        onSubmit={submitImageDataUpdates}
+      >
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="imageName">Name</label>
           <input
             className="text-input"
             type="text"
-            name="name"
-            id="name"
+            name="imageName"
+            id="imageName"
             value={imageName}
             onChange={(e) => setImageName(e.target.value)}
             required
           />
-          {/* {showErrorFor("imageName")} */}
+          {errors.find((error) => error.path === "imageName") &&
+            showErrorFor("imageName")}
         </div>
         <div>
-          <label htmlFor="url">URL</label>
+          <label htmlFor="imageUrl">URL</label>
           <input
             type="url"
-            name="url"
-            id="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            name="imageUrl"
+            id="imageUrl"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
             required
           />
-          {/* {showErrorFor("url")} */}
+          {errors.find((error) => error.path === "imageUrl") &&
+            showErrorFor("imageUrl")}
         </div>
         <h2>Specify items to find</h2>
         {itemFieldsets}

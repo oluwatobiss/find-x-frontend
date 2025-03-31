@@ -31,7 +31,10 @@ export default function AddImage() {
         {
           method: "POST",
           body: JSON.stringify({ imageName, imageUrl, itemsData }),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${userToken}`,
+          },
         }
       );
       const imageData = await response.json();
@@ -65,7 +68,7 @@ export default function AddImage() {
   }
 
   const itemFieldsets = itemsData.map((data, index) => (
-    <section key={data.id} id={data.id}>
+    <section key={data.id}>
       <fieldset className="my-8 border border-gray-500 rounded-sm px-10 py-7">
         <legend className="px-2 uppercase font-semibold">
           Item {index + 1}
