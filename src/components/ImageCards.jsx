@@ -44,8 +44,11 @@ export default function ImageCards() {
             alt={image.imageName}
             className="pr-7 w-3xs"
           />
-          <span className="[&_button]:px-7 [&_button]:py-3 [&_button]:border [&_button]:rounded-sm [&_button]:border-gray-400 [&_button]:bg-gray-100 [&_button]:hover:bg-gray-200 [&_button]:text-gray-800 [&_button]:cursor-pointer">
-            <h3 className="text-lg font-bold mb-3">{image.imageName}</h3>
+          <span className="[&_button]:px-6 [&_button]:py-1.5 [&_button]:border [&_button]:rounded-sm [&_button]:border-gray-400 [&_button]:bg-gray-100 [&_button]:hover:bg-gray-200 [&_button]:text-sm [&_button]:text-gray-800 [&_button]:cursor-pointer">
+            <span className="inline-block mb-2 px-4 py-1 border rounded-sm border-gray-600 text-xs text-gray-600">
+              {image.published ? "published" : "draft"}
+            </span>
+            <h3 className="text-2xl font-bold mb-3">{image.imageName}</h3>
             <button
               className="mr-3"
               type="button"

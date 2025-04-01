@@ -6,6 +6,7 @@ export default function AddImage() {
   const [imageName, setImageName] = useState(imageData.imageName);
   const [imageUrl, setImageUrl] = useState(imageData.imageUrl);
   const [itemsData, setItemsData] = useState(imageData.itemsData);
+  const [published, setPublished] = useState(imageData.published);
   const [errors, setErrors] = useState([]);
 
   function createItemData() {
@@ -25,7 +26,7 @@ export default function AddImage() {
   async function submitImageDataUpdates(e) {
     e.preventDefault();
 
-    console.log({ imageName, imageUrl, itemsData });
+    console.log({ imageName, imageUrl, itemsData, published });
 
     try {
       const userToken = localStorage.getItem("findXToken");
@@ -33,7 +34,7 @@ export default function AddImage() {
         `${import.meta.env.PUBLIC_BACKEND_URI}/images/${imageData.id}`,
         {
           method: "PUT",
-          body: JSON.stringify({ imageName, imageUrl, itemsData }),
+          body: JSON.stringify({ imageName, imageUrl, itemsData, published }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
             Authorization: `Bearer ${userToken}`,
@@ -76,9 +77,10 @@ export default function AddImage() {
         <legend className="px-2 uppercase font-semibold">
           Item {index + 1}
         </legend>
-        <label className="w-full">
+        <label className="w-full mt-3">
           Name
           <input
+            className="w-full"
             type="text"
             name="itemName"
             value={data.itemName}
@@ -89,9 +91,10 @@ export default function AddImage() {
             (error) => error.path === `itemsData[${index}].itemName`
           ) && showErrorFor(`itemsData[${index}].itemName`)}
         </label>
-        <label className="w-full">
+        <label className="w-full mt-3">
           Item image's URL
           <input
+            className="w-full"
             type="url"
             name="itemImageUrl"
             value={data.itemImageUrl}
@@ -105,10 +108,9 @@ export default function AddImage() {
           Pixel location
         </div>
         <div className="flex gap-x-3">
-          <label>
+          <label className="mt-3">
             Center-X (px)
             <input
-              className="text-input"
               type="number"
               name="centerX"
               value={data.centerX}
@@ -119,10 +121,9 @@ export default function AddImage() {
               (error) => error.path === `itemsData[${index}].centerX`
             ) && showErrorFor(`itemsData[${index}].centerX`)}
           </label>
-          <label>
+          <label className="mt-3">
             Center-Y (px)
             <input
-              className="text-input"
               type="number"
               name="centerY"
               value={data.centerY}
@@ -135,10 +136,9 @@ export default function AddImage() {
           </label>
         </div>
         <div className="flex gap-x-3">
-          <label>
+          <label className="mt-3">
             Start-X (px)
             <input
-              className="text-input"
               type="number"
               name="startX"
               value={data.startX}
@@ -149,10 +149,9 @@ export default function AddImage() {
               (error) => error.path === `itemsData[${index}].startX`
             ) && showErrorFor(`itemsData[${index}].startX`)}
           </label>
-          <label>
+          <label className="mt-3">
             Start-Y (px)
             <input
-              className="text-input"
               type="number"
               name="startY"
               value={data.startY}
@@ -165,10 +164,9 @@ export default function AddImage() {
           </label>
         </div>
         <div className="flex gap-x-3">
-          <label>
+          <label className="mt-3">
             End-X (px)
             <input
-              className="text-input"
               type="number"
               name="endX"
               value={data.endX}
@@ -179,10 +177,9 @@ export default function AddImage() {
               (error) => error.path === `itemsData[${index}].endX`
             ) && showErrorFor(`itemsData[${index}].endX`)}
           </label>
-          <label>
+          <label className="mt-3">
             End-Y (px)
             <input
-              className="text-input"
               type="number"
               name="endY"
               value={data.endY}
@@ -212,13 +209,15 @@ export default function AddImage() {
   return (
     <>
       <form
-        className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3"
+        className="[&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm"
         onSubmit={submitImageDataUpdates}
       >
         <div>
-          <label htmlFor="imageName">Name</label>
+          <label htmlFor="imageName" className="mt-3">
+            Name
+          </label>
           <input
-            className="text-input"
+            className="w-full"
             type="text"
             name="imageName"
             id="imageName"
@@ -230,8 +229,11 @@ export default function AddImage() {
             showErrorFor("imageName")}
         </div>
         <div>
-          <label htmlFor="imageUrl">URL</label>
+          <label htmlFor="imageUrl" className="mt-3">
+            URL
+          </label>
           <input
+            className="w-full"
             type="url"
             name="imageUrl"
             id="imageUrl"
@@ -244,6 +246,15 @@ export default function AddImage() {
         </div>
         <h2>Specify items to find</h2>
         {itemFieldsets}
+        <section className="flex items-center mb-4 gap-2">
+          <label htmlFor="publishImage">Publish Now?</label>
+          <input
+            type="checkbox"
+            id="publishImage"
+            checked={published}
+            onChange={() => setPublished(!published)}
+          />
+        </section>
         <section className="flex gap-x-3">
           <button
             type="button"
