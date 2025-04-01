@@ -1,0 +1,10 @@
+---
+import EditUserForm from "../components/EditUserForm";
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "Update User's Data | Find X";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>Update User's Data</h1>
+  <EditUserForm client:only="react" />
+</Layout>

@@ -29,7 +29,10 @@ export default function Navigation() {
         {!userStatus && <a href="/sign-up">Sign up</a>}
         {!userToken && <a href="/log-in">Log in</a>}
         {userToken && userStatus === "ADMIN" && (
-          <a href="/dashboard/">Dashboard</a>
+          <>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/manage-users/">Manage users</a>
+          </>
         )}
         {userToken && (
           <>

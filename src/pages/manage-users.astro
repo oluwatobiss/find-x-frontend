@@ -1,0 +1,10 @@
+---
+import UserCards from "../components/UserCards";
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "All users | Find X";
+---
+
+<Layout pageTitle={pageTitle}>
+  <h1>All Users</h1>
+  <UserCards client:only="react" />
+</Layout>
