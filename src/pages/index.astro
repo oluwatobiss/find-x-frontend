@@ -1,13 +1,10 @@
 ---
+import GameConfigForm from "../components/GameConfigForm";
 import Layout from "../layouts/Layout.astro";
 const pageTitle = "Home | Find X";
 ---
 
 <Layout pageTitle={pageTitle}>
   <h1>Welcome to the Find X Game!</h1>
-  <main class="flex justify-center">
-    <ul>
-      <li><a href="/game">Play game</a></li>
-    </ul>
-  </main>
+  <GameConfigForm client:only="react" />
 </Layout>
