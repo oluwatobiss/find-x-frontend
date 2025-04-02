@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import ContextMenu from "./ContextMenu";
 import showContextMenu from "../showContextMenu";
-import donutPile from "../assets/images/donut-pile.jpg";
 
 export default function GameElements() {
+  const gameImage = localStorage.getItem("findXGameImage");
   const contextMenuRef = useRef(null);
   const targetingBoxRef = useRef(null);
 
@@ -45,11 +45,11 @@ export default function GameElements() {
         ref={targetingBoxRef}
       ></div>
       <img
+        className="w-full"
+        alt="Find X's game image"
         onMouseDown={showContextBoxesAtClickedSpot}
         onContextMenu={hideContextBoxes}
-        src={donutPile.src}
-        alt="Donut pile"
-        width={"100%"}
+        src={gameImage}
       />
     </>
   );
