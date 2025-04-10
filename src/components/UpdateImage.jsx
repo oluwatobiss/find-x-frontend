@@ -267,7 +267,7 @@ export default function AddImage() {
             type="submit"
             className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
           >
-            Submit image
+            Update image
           </button>
         </section>
       </form>
