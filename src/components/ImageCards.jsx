@@ -40,7 +40,7 @@ export default function ImageCards() {
           className="flex items-center border border-gray-400 rounded-sm p-5 mb-4"
         >
           <img
-            src={image.imageUrl}
+            src={`${image.imageUrl}?q=80&w=640`}
             alt={image.imageName}
             className="pr-7 w-3xs"
           />
