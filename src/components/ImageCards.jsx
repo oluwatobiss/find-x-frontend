@@ -8,11 +8,13 @@ export default function ImageCards() {
 
   async function deleteImage(imageId) {
     try {
-      await fetch(`${backendUri}/images/${imageId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
-      setReload(!reload);
+      if (confirm("Delete the image permanently?")) {
+        await fetch(`${backendUri}/images/${imageId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+        setReload(!reload);
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
