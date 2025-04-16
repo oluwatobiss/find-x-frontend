@@ -1,10 +1,10 @@
 ---
 import "./src/styles/global.css";
-import GameElements from "../components/GameElements";
+import GameArena from "../components/GameArena";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -12,7 +12,7 @@ import GameElements from "../components/GameElements";
     <meta name="generator" content={Astro.generator} />
     <title>Find X</title>
   </head>
-  <body>
-    <GameElements client:only="react" />
+  <body class="h-full">
+    <GameArena client:only="react" />
   </body>
 </html>

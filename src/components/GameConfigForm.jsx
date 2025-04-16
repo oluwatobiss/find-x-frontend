@@ -7,7 +7,15 @@ export default function GameConfigForm() {
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
 
   async function startGame() {
-    localStorage.setItem("findXGameImage", images[imageIndex].imageUrl);
+    const gameImg = images[imageIndex];
+    localStorage.setItem(
+      "findXGameImage",
+      JSON.stringify({
+        id: gameImg.id,
+        name: gameImg.imageName,
+        url: gameImg.imageUrl,
+      })
+    );
     window.location.href = "/game/";
   }
 
