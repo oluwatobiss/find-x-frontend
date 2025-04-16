@@ -41,12 +41,6 @@ export default function GameArena() {
     const imageX = e.clientX - imageRect.left;
     const imageY = e.clientY - imageRect.top;
 
-    // console.log({ clientX: e.clientX, clientY: e.clientY });
-    // console.log({ imageX, imageY });
-    // console.log({ startX, startY, endX, endY });
-
-    // console.log(imageRect);
-
     setClickedSpotData({
       imageX,
       imageY,

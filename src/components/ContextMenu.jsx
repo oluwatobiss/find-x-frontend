@@ -16,20 +16,13 @@ export default function ContextMenu({ ref, clickedSpot, imageItems }) {
     console.log(clickedSpot);
     console.log(imageItems);
     console.log({ clickedMenu });
-    const menuItemData = imageItems.find((item) => {
-      console.log("=== IF Statement ===");
-      console.log(item.itemName === clickedMenu);
-      console.log(item.itemName);
-      console.log(clickedMenu);
-
-      return item.itemName === clickedMenu;
-    });
-    console.log(menuItemData);
+    const menuItem = imageItems.find((item) => item.itemName === clickedMenu);
+    console.log(menuItem);
     if (
-      clickedSpot.imageX >= menuItemData?.startX * clickedSpot.imageWidth &&
-      clickedSpot.imageX <= menuItemData?.endX * clickedSpot.imageWidth &&
-      clickedSpot.imageY >= menuItemData?.startY * clickedSpot.imageHeight &&
-      clickedSpot.imageY <= menuItemData?.endY * clickedSpot.imageHeight
+      clickedSpot.imageX >= menuItem?.startX * clickedSpot.imageWidth &&
+      clickedSpot.imageX <= menuItem?.endX * clickedSpot.imageWidth &&
+      clickedSpot.imageY >= menuItem?.startY * clickedSpot.imageHeight &&
+      clickedSpot.imageY <= menuItem?.endY * clickedSpot.imageHeight
     ) {
       console.log("=== You found an item! ===");
       console.log(`${clickedMenu} found!`);
