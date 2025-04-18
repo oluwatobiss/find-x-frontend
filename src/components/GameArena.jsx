@@ -6,12 +6,7 @@ export default function GameArena() {
   const imageItemsRef = useRef(null);
   const contextMenuRef = useRef(null);
   const targetingBoxRef = useRef(null);
-  const [clickedSpotData, setClickedSpotData] = useState({
-    imageX: 0,
-    imageY: 0,
-    imageWidth: 0,
-    imageHeight: 0,
-  });
+  const [clickedSpotEvent, setClickedSpotEvent] = useState({});
   const gameImageJson = localStorage.getItem("findXGameImage");
   const userToken = localStorage.getItem("findXToken");
   const gameImage = gameImageJson && JSON.parse(gameImageJson);
@@ -31,23 +26,7 @@ export default function GameArena() {
   }
 
   function showContextBoxesAtClickedSpot(e) {
-    // imageRect = Info about the image's size and position relative to the browser's viewport
-    // clientX = x-position of the mouse click relative to the browser's viewport
-    // clientY = y-position of the mouse click relative to the browser's viewport
-    // clientX/Y illustration --> https://stackoverflow.com/a/21452887/11841906
-    // imageX = x-position of the mouse click relative to the image
-    // imageY = y-position of the mouse click relative to the image
-    const imageRect = e.currentTarget.getBoundingClientRect();
-    const imageX = e.clientX - imageRect.left;
-    const imageY = e.clientY - imageRect.top;
-
-    setClickedSpotData({
-      imageX,
-      imageY,
-      imageWidth: imageRect.width,
-      imageHeight: imageRect.height,
-    });
-
+    setClickedSpotEvent(e);
     showContextMenu(e);
     showTargetingBox(e);
   }
@@ -78,10 +57,10 @@ export default function GameArena() {
   }, []);
 
   return (
-    <div className="h-full flex items-center">
+    <div id="game-arena" className="relative h-full flex items-center">
       <ContextMenu
         ref={contextMenuRef}
-        clickedSpot={clickedSpotData}
+        clickedSpotEvent={clickedSpotEvent}
         imageItems={imageItemsRef?.current}
       />
       <div

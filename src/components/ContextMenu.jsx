@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
+import markItem from "../markItem";
 
-export default function ContextMenu({ ref, clickedSpot, imageItems }) {
+export default function ContextMenu({ ref, clickedSpotEvent, imageItems }) {
   const menuItemsSet = useRef(false);
   const menuClicked = useRef(false);
   const [menuItems, setMenuItems] = useState([]);
@@ -13,19 +14,41 @@ export default function ContextMenu({ ref, clickedSpot, imageItems }) {
 
   if (menuClicked.current) {
     console.log("=== ContextMenu ===");
-    console.log(clickedSpot);
+    console.log(clickedSpotEvent);
     console.log(imageItems);
     console.log({ clickedMenu });
+
+    // imageRect = Info about the image's size and position relative to the browser's viewport
+    // clientX = x-position of the mouse click relative to the browser's viewport
+    // clientY = y-position of the mouse click relative to the browser's viewport
+    // clientX/Y illustration --> https://stackoverflow.com/a/21452887/11841906
+    // imageClientX = clientX minus any offset on the image's left
+    // imageClientY = clientY minus any offset on the image's top
+    // itemX = center-x-position of the item relative to the image
+    // itemY = center-y-position of the item relative to the image
+
+    const imageRect = clickedSpotEvent.target.getBoundingClientRect();
+    const imageClientX = clickedSpotEvent.clientX - imageRect.left;
+    const imageClientY = clickedSpotEvent.clientY - imageRect.top;
+
+    console.log(imageRect);
+
     const menuItem = imageItems.find((item) => item.itemName === clickedMenu);
     console.log(menuItem);
+
     if (
-      clickedSpot.imageX >= menuItem?.startX * clickedSpot.imageWidth &&
-      clickedSpot.imageX <= menuItem?.endX * clickedSpot.imageWidth &&
-      clickedSpot.imageY >= menuItem?.startY * clickedSpot.imageHeight &&
-      clickedSpot.imageY <= menuItem?.endY * clickedSpot.imageHeight
+      imageClientX >= menuItem?.startX * imageRect.width &&
+      imageClientX <= menuItem?.endX * imageRect.width &&
+      imageClientY >= menuItem?.startY * imageRect.height &&
+      imageClientY <= menuItem?.endY * imageRect.height
     ) {
       console.log("=== You found an item! ===");
       console.log(`${clickedMenu} found!`);
+
+      const itemX = (menuItem.centerX * imageRect.width) + imageRect.left; // prettier-ignore
+      const itemY = (menuItem.centerY * imageRect.height) + imageRect.top; // prettier-ignore
+
+      markItem({ itemX, itemY, itemName: menuItem.itemName });
     }
     menuClicked.current = false;
   }
