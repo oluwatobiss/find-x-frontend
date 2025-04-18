@@ -59,7 +59,8 @@ export default function GameArena() {
   return (
     <div id="game-arena" className="relative h-full flex items-center">
       <ContextMenu
-        ref={contextMenuRef}
+        contextMenuRef={contextMenuRef}
+        targetingBoxRef={targetingBoxRef}
         clickedSpotEvent={clickedSpotEvent}
         imageItems={imageItemsRef?.current}
       />

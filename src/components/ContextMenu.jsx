@@ -1,7 +1,12 @@
 import { useRef, useState } from "react";
 import markItem from "../markItem";
 
-export default function ContextMenu({ ref, clickedSpotEvent, imageItems }) {
+export default function ContextMenu({
+  contextMenuRef,
+  targetingBoxRef,
+  clickedSpotEvent,
+  imageItems,
+}) {
   const menuItemsSet = useRef(false);
   const menuClicked = useRef(false);
   const [menuItems, setMenuItems] = useState([]);
@@ -10,6 +15,10 @@ export default function ContextMenu({ ref, clickedSpotEvent, imageItems }) {
   function recordClickedMenu(e) {
     menuClicked.current = true;
     setClickedMenu(e.currentTarget.getAttribute("data-menu-item-name"));
+    contextMenuRef.current.classList.remove("visible");
+    contextMenuRef.current.classList.add("invisible");
+    targetingBoxRef.current.classList.remove("visible");
+    targetingBoxRef.current.classList.add("invisible");
   }
 
   if (menuClicked.current) {
@@ -30,10 +39,9 @@ export default function ContextMenu({ ref, clickedSpotEvent, imageItems }) {
     const imageRect = clickedSpotEvent.target.getBoundingClientRect();
     const imageClientX = clickedSpotEvent.clientX - imageRect.left;
     const imageClientY = clickedSpotEvent.clientY - imageRect.top;
+    const menuItem = imageItems.find((item) => item.itemName === clickedMenu);
 
     console.log(imageRect);
-
-    const menuItem = imageItems.find((item) => item.itemName === clickedMenu);
     console.log(menuItem);
 
     if (
@@ -79,7 +87,7 @@ export default function ContextMenu({ ref, clickedSpotEvent, imageItems }) {
     <article
       id="context-menu"
       className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
-      ref={ref}
+      ref={contextMenuRef}
     >
       <section className="py-[7px] px-[13px] flex justify-between">
         <span className="text-[#eee]">Find...</span>
