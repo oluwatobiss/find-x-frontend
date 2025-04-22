@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ItemChoiceFeedback from "./ItemChoiceFeedback";
 import ContextMenu from "./ContextMenu";
 import showContextMenu from "../showContextMenu";
 
@@ -6,7 +7,13 @@ export default function GameArena() {
   const imageItemsRef = useRef(null);
   const contextMenuRef = useRef(null);
   const targetingBoxRef = useRef(null);
+  const itemChoiceFeedbackRef = useRef(null);
+  const itemChoiceFeedbackVisibilityRef = useRef(false);
   const [clickedSpotEvent, setClickedSpotEvent] = useState({});
+  const [itemFound, setItemFound] = useState({
+    itemFound: false,
+    clickedMenu: "",
+  });
   const gameImageJson = localStorage.getItem("findXGameImage");
   const userToken = localStorage.getItem("findXToken");
   const gameImage = gameImageJson && JSON.parse(gameImageJson);
@@ -26,6 +33,7 @@ export default function GameArena() {
   }
 
   function showContextBoxesAtClickedSpot(e) {
+    itemChoiceFeedbackRef.current.style.display = "none";
     setClickedSpotEvent(e);
     showContextMenu(e);
     showTargetingBox(e);
@@ -57,12 +65,22 @@ export default function GameArena() {
   }, []);
 
   return (
-    <div id="game-arena" className="relative h-full flex items-center">
+    <div
+      id="game-arena"
+      className="relative h-full flex justify-center items-center"
+    >
+      <ItemChoiceFeedback
+        itemChoiceFeedbackRef={itemChoiceFeedbackRef}
+        itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
+        itemFound={itemFound}
+      />
       <ContextMenu
+        imageItems={imageItemsRef?.current}
         contextMenuRef={contextMenuRef}
         targetingBoxRef={targetingBoxRef}
+        itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
         clickedSpotEvent={clickedSpotEvent}
-        imageItems={imageItemsRef?.current}
+        setItemFound={setItemFound}
       />
       <div
         id="targeting-box"

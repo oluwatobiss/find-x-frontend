@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import markItem from "../markItem";
 
 export default function ContextMenu({
+  imageItems,
   contextMenuRef,
   targetingBoxRef,
+  itemChoiceFeedbackVisibilityRef,
   clickedSpotEvent,
-  imageItems,
+  setItemFound,
 }) {
   const menuItemsSet = useRef(false);
   const menuClicked = useRef(false);
@@ -16,14 +18,8 @@ export default function ContextMenu({
   });
 
   function recordClickedMenu(e) {
-    console.log("=== start recordClickedMenu start ===");
     const clickedItemName = e.currentTarget.getAttribute("data-menu-item-name");
     menuClicked.current = true;
-
-    console.log(clickedMenu.itemName);
-    console.log(clickedItemName);
-    console.log(clickedMenu.forceUpdateClickedMenu);
-
     setClickedMenu({
       forceUpdateClickedMenu: !clickedMenu.forceUpdateClickedMenu,
       itemName: clickedItemName,
@@ -32,16 +28,10 @@ export default function ContextMenu({
     contextMenuRef.current.classList.add("invisible");
     targetingBoxRef.current.classList.remove("visible");
     targetingBoxRef.current.classList.add("invisible");
-    console.log("=== end recordClickedMenu end ===");
   }
 
   useEffect(() => {
     if (menuClicked.current) {
-      console.log("=== ContextMenu ===");
-      console.log(clickedSpotEvent);
-      console.log(imageItems);
-      console.log(clickedMenu);
-
       // imageRect = Info about the image's size and position relative to the browser's viewport
       // clientX = x-position of the mouse click relative to the browser's viewport
       // clientY = y-position of the mouse click relative to the browser's viewport
@@ -50,34 +40,27 @@ export default function ContextMenu({
       // imageClientY = clientY minus any offset on the image's top
       // itemX = center-x-position of the item relative to the image
       // itemY = center-y-position of the item relative to the image
-
       const imageRect = clickedSpotEvent.target.getBoundingClientRect();
       const imageClientX = clickedSpotEvent.clientX - imageRect.left;
       const imageClientY = clickedSpotEvent.clientY - imageRect.top;
       const menuItem = imageItems.find(
         (item) => item.itemName === clickedMenu.itemName
       );
-
-      console.log(imageRect);
-      console.log(menuItem);
-
       if (
         imageClientX >= menuItem?.startX * imageRect.width &&
         imageClientX <= menuItem?.endX * imageRect.width &&
         imageClientY >= menuItem?.startY * imageRect.height &&
         imageClientY <= menuItem?.endY * imageRect.height
       ) {
-        console.log("=== You found an item! ===");
-        console.log(`${clickedMenu.itemName} found!`);
-
         const itemX = (menuItem.centerX * imageRect.width) + imageRect.left; // prettier-ignore
         const itemY = (menuItem.centerY * imageRect.height) + imageRect.top; // prettier-ignore
-
+        setItemFound({ itemFound: true, clickedMenu: clickedMenu.itemName });
         markItem({ itemX, itemY, itemName: menuItem.itemName });
+      } else {
+        setItemFound({ itemFound: false, clickedMenu: clickedMenu.itemName });
       }
+      itemChoiceFeedbackVisibilityRef.current = true;
       menuClicked.current = false;
-      console.log("=== Last ===");
-      console.log(menuClicked);
     }
   }, [clickedMenu]);
 
@@ -105,9 +88,9 @@ export default function ContextMenu({
 
   return (
     <article
+      ref={contextMenuRef}
       id="context-menu"
       className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
-      ref={contextMenuRef}
     >
       <section className="py-[7px] px-[13px] flex justify-between">
         <span className="text-[#eee]">Find...</span>
