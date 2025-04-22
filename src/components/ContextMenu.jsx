@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import markItem from "../markItem";
 
 export default function ContextMenu({
-  imageItems,
+  imageItemsRef,
   contextMenuRef,
   targetingBoxRef,
   itemChoiceFeedbackVisibilityRef,
@@ -43,6 +43,7 @@ export default function ContextMenu({
       const imageRect = clickedSpotEvent.target.getBoundingClientRect();
       const imageClientX = clickedSpotEvent.clientX - imageRect.left;
       const imageClientY = clickedSpotEvent.clientY - imageRect.top;
+      const imageItems = imageItemsRef.current;
       const menuItem = imageItems.find(
         (item) => item.itemName === clickedMenu.itemName
       );
@@ -54,8 +55,13 @@ export default function ContextMenu({
       ) {
         const itemX = (menuItem.centerX * imageRect.width) + imageRect.left; // prettier-ignore
         const itemY = (menuItem.centerY * imageRect.height) + imageRect.top; // prettier-ignore
+        const newImageItems = imageItems.filter(
+          (item) => item.itemName !== clickedMenu.itemName
+        );
         setItemFound({ itemFound: true, clickedMenu: clickedMenu.itemName });
         markItem({ itemX, itemY, itemName: menuItem.itemName });
+        menuItemsSet.current = false;
+        imageItemsRef.current = newImageItems;
       } else {
         setItemFound({ itemFound: false, clickedMenu: clickedMenu.itemName });
       }
@@ -64,8 +70,8 @@ export default function ContextMenu({
     }
   }, [clickedMenu]);
 
-  if (imageItems && !menuItemsSet.current) {
-    const menuItems = imageItems.map((item) => {
+  if (imageItemsRef.current && !menuItemsSet.current) {
+    const menuItems = imageItemsRef.current.map((item) => {
       return (
         <div
           className="flex items-center h-[40px] px-[13px] text-[#eee] cursor-pointer rounded-sm hover:bg-[#343434]"
@@ -90,7 +96,7 @@ export default function ContextMenu({
     <article
       ref={contextMenuRef}
       id="context-menu"
-      className="fixed z-40 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
+      className="fixed z-50 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
     >
       <section className="py-[7px] px-[13px] flex justify-between">
         <span className="text-[#eee]">Find...</span>

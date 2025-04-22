@@ -75,7 +75,7 @@ export default function GameArena() {
         itemFound={itemFound}
       />
       <ContextMenu
-        imageItems={imageItemsRef?.current}
+        imageItemsRef={imageItemsRef}
         contextMenuRef={contextMenuRef}
         targetingBoxRef={targetingBoxRef}
         itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
@@ -84,7 +84,7 @@ export default function GameArena() {
       />
       <div
         id="targeting-box"
-        className="fixed z-30 size-10 bg-red-500/50 border-4 border-red-950 border-dashed rounded-full invisible"
+        className="fixed z-40 size-10 bg-red-500/50 border-4 border-red-950 border-dashed rounded-full invisible"
         ref={targetingBoxRef}
       ></div>
       <img

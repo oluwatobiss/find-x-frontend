@@ -5,7 +5,7 @@ export default function markItem(clickedSpot) {
   image.setAttribute("alt", `${clickedSpot.itemName} check mark`);
   image.setAttribute("width", "50");
   image.setAttribute("height", "50");
-  image.setAttribute("class", "absolute z-1000");
+  image.setAttribute("class", "absolute z-10");
   image.setAttribute(
     "style",
     `left: ${clickedSpot.itemX - 25}px; top: ${clickedSpot.itemY - 25}px`
