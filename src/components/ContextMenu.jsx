@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useStopwatch } from "react-timer-hook";
 import markItem from "../markItem";
 
 export default function ContextMenu({
@@ -16,6 +17,7 @@ export default function ContextMenu({
     forceUpdateClickedMenu: true,
     itemName: "",
   });
+  const { seconds, minutes, hours, pause } = useStopwatch({ autoStart: true });
 
   function recordClickedMenu(e) {
     const clickedItemName = e.currentTarget.getAttribute("data-menu-item-name");
@@ -62,6 +64,11 @@ export default function ContextMenu({
         markItem({ itemX, itemY, itemName: menuItem.itemName });
         menuItemsSet.current = false;
         imageItemsRef.current = newImageItems;
+        if (!newImageItems.length) {
+          console.log("=== All items found!!! ===");
+          pause();
+          console.log({ hours, minutes, seconds });
+        }
       } else {
         setItemFound({ itemFound: false, clickedMenu: clickedMenu.itemName });
       }
