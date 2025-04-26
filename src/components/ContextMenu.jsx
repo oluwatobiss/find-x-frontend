@@ -33,6 +33,7 @@ export default function ContextMenu({
   }
 
   useEffect(() => {
+    let ignore = false;
     if (menuClicked.current) {
       // imageRect = Info about the image's size and position relative to the browser's viewport
       // clientX = x-position of the mouse click relative to the browser's viewport
@@ -64,10 +65,52 @@ export default function ContextMenu({
         markItem({ itemX, itemY, itemName: menuItem.itemName });
         menuItemsSet.current = false;
         imageItemsRef.current = newImageItems;
-        if (!newImageItems.length) {
-          console.log("=== All items found!!! ===");
+        if (newImageItems.length === 0) {
           pause();
+          console.log("=== All items found!!! ===");
           console.log({ hours, minutes, seconds });
+          async function checkIfPlayerMadeTopTen() {
+            try {
+              const userToken = localStorage.getItem("findXToken");
+              const loggedInUserJson = localStorage.getItem("findXUserData");
+              const loggedInUser =
+                loggedInUserJson && JSON.parse(loggedInUserJson);
+
+              console.log("== User is logged in??? ===");
+              console.log(loggedInUser);
+
+              const response = await fetch(
+                `${import.meta.env.PUBLIC_BACKEND_URI}/leaders`,
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    playerId: loggedInUser
+                      ? loggedInUser.username
+                      : "anonymous",
+                    hours,
+                    minutes,
+                    seconds,
+                  }),
+                  headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    Authorization: `Bearer ${userToken}`,
+                  },
+                }
+              );
+              const leadersData = await response.json();
+              console.log("== leadersData Response ===");
+              console.log(leadersData);
+
+              // imageData.errors?.length
+              //   ? setErrors(imageData.errors)
+              //   : (window.location.href = "/");
+            } catch (error) {
+              if (error instanceof Error) {
+                console.error(error.message);
+              }
+            }
+          }
+          checkIfPlayerMadeTopTen();
         }
       } else {
         setItemFound({ itemFound: false, clickedMenu: clickedMenu.itemName });
@@ -75,6 +118,9 @@ export default function ContextMenu({
       itemChoiceFeedbackVisibilityRef.current = true;
       menuClicked.current = false;
     }
+    return () => {
+      ignore = true;
+    };
   }, [clickedMenu]);
 
   if (imageItemsRef.current && !menuItemsSet.current) {
