@@ -25,6 +25,7 @@ pnpm-debug.log*
 
 # Word backup files
 ~$*.docx
+*.tmp
 
 # Afinity backup files
 *afdesign~lock~

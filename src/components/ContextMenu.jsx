@@ -8,6 +8,7 @@ export default function ContextMenu({
   targetingBoxRef,
   itemChoiceFeedbackVisibilityRef,
   clickedSpotEvent,
+  setGameResult,
   setItemFound,
 }) {
   const menuItemsSet = useRef(false);
@@ -97,13 +98,14 @@ export default function ContextMenu({
                   },
                 }
               );
-              const leadersData = await response.json();
-              console.log("== leadersData Response ===");
-              console.log(leadersData);
+              const leader = await response.json();
 
-              // imageData.errors?.length
-              //   ? setErrors(imageData.errors)
-              //   : (window.location.href = "/");
+              console.log("== leader Response ===");
+              console.log(leader);
+
+              leader
+                ? setGameResult({ show: true, text: "congrats" })
+                : setGameResult({ show: true, text: "oops" });
             } catch (error) {
               if (error instanceof Error) {
                 console.error(error.message);

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ResultModal from "./ResultModal";
 import ItemChoiceFeedback from "./ItemChoiceFeedback";
 import ContextMenu from "./ContextMenu";
 import showContextMenu from "../showContextMenu";
@@ -9,6 +10,7 @@ export default function GameArena() {
   const targetingBoxRef = useRef(null);
   const itemChoiceFeedbackRef = useRef(null);
   const itemChoiceFeedbackVisibilityRef = useRef(false);
+  const [gameResult, setGameResult] = useState({ show: false, text: "" });
   const [clickedSpotEvent, setClickedSpotEvent] = useState({});
   const [itemFound, setItemFound] = useState({
     itemFound: false,
@@ -69,24 +71,30 @@ export default function GameArena() {
       id="game-arena"
       className="relative h-full flex justify-center items-center"
     >
+      {gameResult.show && <ResultModal text={gameResult.text} />}
       <ItemChoiceFeedback
         itemChoiceFeedbackRef={itemChoiceFeedbackRef}
         itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
         itemFound={itemFound}
       />
-      <ContextMenu
-        imageItemsRef={imageItemsRef}
-        contextMenuRef={contextMenuRef}
-        targetingBoxRef={targetingBoxRef}
-        itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
-        clickedSpotEvent={clickedSpotEvent}
-        setItemFound={setItemFound}
-      />
-      <div
-        id="targeting-box"
-        className="fixed z-40 size-10 bg-red-500/50 border-4 border-red-950 border-dashed rounded-full invisible"
-        ref={targetingBoxRef}
-      ></div>
+      {!gameResult.show && (
+        <ContextMenu
+          imageItemsRef={imageItemsRef}
+          contextMenuRef={contextMenuRef}
+          targetingBoxRef={targetingBoxRef}
+          itemChoiceFeedbackVisibilityRef={itemChoiceFeedbackVisibilityRef}
+          clickedSpotEvent={clickedSpotEvent}
+          setGameResult={setGameResult}
+          setItemFound={setItemFound}
+        />
+      )}
+      {!gameResult.show && (
+        <div
+          id="targeting-box"
+          className="fixed z-40 size-10 bg-red-500/50 border-4 border-red-950 border-dashed rounded-full invisible"
+          ref={targetingBoxRef}
+        ></div>
+      )}
       <img
         className="w-full"
         alt="Find X's game image"
