@@ -11,6 +11,9 @@ export default function ResultModal({ text }) {
     <article
       id="oops-modal"
       className="fixed z-50 size-full bg-black/77 backdrop-blur-sm text-white text-center flex items-center justify-center"
+      onClick={(e) =>
+        e.target.nodeName === "ARTICLE" && window.location.reload()
+      }
     >
       <div
         id="oops-modal-content"
@@ -21,15 +24,22 @@ export default function ResultModal({ text }) {
             title="Close"
             id="close-oops-modal"
             className="p-2 hover:cursor-pointer hover:bg-[rgba(255,255,255,0.17)] hover:rounded-full"
+            onClick={() => window.location.reload()}
           >
             ❌
           </span>
         </div>
         <h1>{appraisal[`${text}`].heading}</h1>
         <p className="pt-3 pb-2 text-xl">{appraisal[`${text}`].text}</p>
-        <a href="/leaderboard" className="hover:text-yellow-100">
-          See the leaderboard
-        </a>
+        <footer className="text-sm">
+          <a href="/leaderboard" className="hover:text-yellow-100">
+            See the leaderboard
+          </a>
+          <span> | </span>
+          <a href="/" className="hover:text-yellow-100">
+            Return Home
+          </a>
+        </footer>
       </div>
     </article>
   );
