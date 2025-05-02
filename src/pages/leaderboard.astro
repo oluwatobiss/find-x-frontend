@@ -1,23 +1,67 @@
 ---
+export const prerender = false;
 import Layout from "../layouts/Layout.astro";
+
+const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URI}/leaders`);
+const top10leaders = await response.json();
+
+type LeaderParameter = {
+  id: number;
+  playerId: string;
+  time: string;
+  timeSort: number;
+  date: string;
+};
 ---
 
 <Layout>
   <h1>Top 10 Leaderboard</h1>
-  <main id="leaderboard">
+  <main>
     <table class="w-full">
       <thead class="border-b">
-        <tr>
+        <tr class="text-left">
           <th>Rank</th>
-          <th>Name</th>
+          <th>Username</th>
           <th>Time</th>
           <th>Date</th>
         </tr>
       </thead>
-      <tbody id="leaderboard-table-body"></tbody>
+      <tbody>
+        {
+          top10leaders.map((leader: LeaderParameter, index: number) => {
+            let medal = "";
+            switch (index) {
+              case 0:
+                medal = " 🥇🏆";
+                break;
+              case 1:
+                medal = " 🥈";
+                break;
+              case 2:
+                medal = " 🥉";
+                break;
+              default:
+                break;
+            }
+            return (
+              <tr>
+                <td class="p-1.5">
+                  #{index + 1}
+                  {medal}
+                </td>
+                <td>@{leader.playerId}</td>
+                <td>{leader.time}</td>
+                <td>{new Date(leader.date).toLocaleDateString()}</td>
+              </tr>
+            );
+          })
+        }
+      </tbody>
     </table>
   </main>
-  <footer>
-    <a href="/game">Play game</a> | <a href="/">Return Home</a>
+  <footer class="pt-3 text-md text-center">
+    <a href="/game" class="hover:text-blue-800">Play game</a>
+    <span> | </span>
+    <a href="/" class="hover:text-blue-800">Return Home</a>
   </footer>
 </Layout>
