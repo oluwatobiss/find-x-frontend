@@ -4,7 +4,13 @@ export default function GameConfigForm() {
   const [images, setImages] = useState([]);
   const [imageIndex, setImageIndex] = useState("0");
   const userToken = localStorage.getItem("findXToken");
+  const loggedInUserJson = localStorage.getItem("findXUserData");
+  const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
+
+  console.log("=== GameConfigForm ===");
+  console.log(loggedInUser);
+  console.log(Boolean(loggedInUser));
 
   async function startGame() {
     const gameImg = images[imageIndex];
@@ -39,9 +45,12 @@ export default function GameConfigForm() {
   useEffect(() => {
     async function getImages() {
       try {
-        const response = await fetch(`${backendUri}/images`, {
-          headers: { Authorization: `Bearer ${userToken}` },
-        });
+        const response = await fetch(
+          `${backendUri}/images/?auth=${Boolean(loggedInUser)}`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        );
         const images = await response.json();
         console.log("=== ImageCards ===");
         console.log(images);

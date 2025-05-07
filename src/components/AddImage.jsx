@@ -3,11 +3,15 @@ import { useState } from "react";
 export default function AddImage() {
   const [imageName, setImageName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [sample, setSample] = useState(false);
   const [itemsData, setItemsData] = useState([createItemData()]);
   const [published, setPublished] = useState(false);
   const [errors, setErrors] = useState([]);
   const loggedInUserJson = localStorage.getItem("findXUserData");
   const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
+
+  console.log("=== AddImage ===");
+  console.log(sample);
 
   function createItemData() {
     return {
@@ -26,7 +30,7 @@ export default function AddImage() {
   async function submitImageData(e) {
     e.preventDefault();
 
-    console.log({ imageName, imageUrl, itemsData, published });
+    console.log({ imageName, imageUrl, sample, itemsData, published });
 
     try {
       const userToken = localStorage.getItem("findXToken");
@@ -34,7 +38,13 @@ export default function AddImage() {
         `${import.meta.env.PUBLIC_BACKEND_URI}/images`,
         {
           method: "POST",
-          body: JSON.stringify({ imageName, imageUrl, itemsData, published }),
+          body: JSON.stringify({
+            imageName,
+            imageUrl,
+            sample,
+            itemsData,
+            published,
+          }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
             Authorization: `Bearer ${userToken}`,
@@ -244,6 +254,16 @@ export default function AddImage() {
             />
             {errors.find((error) => error.path === "imageUrl") &&
               showErrorFor("imageUrl")}
+          </div>
+          <div className="mt-3 flex items-center gap-3">
+            <label htmlFor="sampleCheckbox">Sample?</label>
+            <input
+              className="w-[initial]"
+              type="checkbox"
+              id="sampleCheckbox"
+              checked={sample}
+              onChange={() => setSample(!sample)}
+            />
           </div>
           <h2>Specify items to find</h2>
           {itemFieldsets}

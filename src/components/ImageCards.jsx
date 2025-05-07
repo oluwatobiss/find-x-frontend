@@ -72,9 +72,12 @@ export default function ImageCards() {
   useEffect(() => {
     async function getImages() {
       try {
-        const response = await fetch(`${backendUri}/images`, {
-          headers: { Authorization: `Bearer ${userToken}` },
-        });
+        const response = await fetch(
+          `${backendUri}/images?auth=${Boolean(loggedInUser)}`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        );
         const images = await response.json();
         console.log("=== ImageCards ===");
         console.log(images);
