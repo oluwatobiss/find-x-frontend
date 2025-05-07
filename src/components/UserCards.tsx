@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 
+type User = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  status: string;
+};
+
 export default function UserCards() {
   const userToken = localStorage.getItem("findXToken");
+  const loggedInUserJson = localStorage.getItem("findXUserData");
+  const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [reload, setReload] = useState(false);
 
-  async function deleteUser(userId) {
+  async function deleteUser(userId: number) {
     try {
       await fetch(`${backendUri}/users/${userId}`, {
         method: "DELETE",
@@ -20,12 +32,12 @@ export default function UserCards() {
     }
   }
 
-  async function editUser(user) {
+  async function editUser(user: User) {
     localStorage.setItem("findXUserToEdit", JSON.stringify(user));
     window.location.href = "/edit-user/";
   }
 
-  function createUserCards(users) {
+  function createUserCards(users: User[]) {
     const userDataJson = localStorage.getItem("findXUserData");
     const userData = userDataJson && JSON.parse(userDataJson);
 
@@ -58,12 +70,22 @@ export default function UserCards() {
 
   useEffect(() => {
     async function getUsers() {
+      console.log("=== getUsers ===");
+      console.log(loggedInUser.status);
+
       try {
-        const response = await fetch(`${backendUri}/users`, {
-          headers: { Authorization: `Bearer ${userToken}` },
-        });
-        const users = await response.json();
-        setUsers(users);
+        const response = await fetch(
+          `${backendUri}/users/?status=${loggedInUser.status}`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        );
+        const users: [] | { message: "" } = await response.json();
+        Array.isArray(users)
+          ? setUsers(users)
+          : (() => {
+              throw new Error(users.message);
+            })();
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);

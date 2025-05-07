@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 
+type LeaderParameter = {
+  id: number;
+  playerId: string;
+  time: string;
+  timeSort: number;
+  date: string;
+};
+
 export default function Leaderboard() {
   const [top10leaders, setTop10leaders] = useState<[] | { message: "" }>([]);
   const userToken = localStorage.getItem("findXToken");
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
-
-  type LeaderParameter = {
-    id: number;
-    playerId: string;
-    time: string;
-    timeSort: number;
-    date: string;
-  };
 
   const nodeToShow = Array.isArray(top10leaders) ? (
     <table className="w-full">
