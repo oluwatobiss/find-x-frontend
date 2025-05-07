@@ -95,5 +95,15 @@ export default function UserCards() {
     getUsers();
   }, [reload]);
 
-  return <article>{users.length ? createUserCards(users) : ""}</article>;
+  return (
+    <article>
+      {users.length ? (
+        createUserCards(users)
+      ) : (
+        <div className="w-full text-center text-sm text-gray-600 pt-30">
+          Admin pass required to manage users
+        </div>
+      )}
+    </article>
+  );
 }
