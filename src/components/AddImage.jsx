@@ -6,6 +6,8 @@ export default function AddImage() {
   const [itemsData, setItemsData] = useState([createItemData()]);
   const [published, setPublished] = useState(false);
   const [errors, setErrors] = useState([]);
+  const loggedInUserJson = localStorage.getItem("findXUserData");
+  const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
 
   function createItemData() {
     return {
@@ -206,69 +208,75 @@ export default function AddImage() {
 
   return (
     <>
-      <form
-        className="[&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm"
-        onSubmit={submitImageData}
-      >
-        <div>
-          <label htmlFor="imageName" className="mt-3">
-            Name
-          </label>
-          <input
-            className="w-full"
-            type="text"
-            name="imageName"
-            id="imageName"
-            value={imageName}
-            onChange={(e) => setImageName(e.target.value)}
-            required
-          />
-          {errors.find((error) => error.path === "imageName") &&
-            showErrorFor("imageName")}
+      {loggedInUser.status === "ADMIN" ? (
+        <form
+          className="[&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm"
+          onSubmit={submitImageData}
+        >
+          <div>
+            <label htmlFor="imageName" className="mt-3">
+              Name
+            </label>
+            <input
+              className="w-full"
+              type="text"
+              name="imageName"
+              id="imageName"
+              value={imageName}
+              onChange={(e) => setImageName(e.target.value)}
+              required
+            />
+            {errors.find((error) => error.path === "imageName") &&
+              showErrorFor("imageName")}
+          </div>
+          <div>
+            <label htmlFor="imageUrl" className="mt-3">
+              URL
+            </label>
+            <input
+              className="w-full"
+              type="url"
+              name="imageUrl"
+              id="imageUrl"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              required
+            />
+            {errors.find((error) => error.path === "imageUrl") &&
+              showErrorFor("imageUrl")}
+          </div>
+          <h2>Specify items to find</h2>
+          {itemFieldsets}
+          <section className="flex items-center mb-4 gap-2">
+            <label htmlFor="publishImage">Publish Now?</label>
+            <input
+              type="checkbox"
+              id="publishImage"
+              checked={published}
+              onChange={() => setPublished(!published)}
+            />
+          </section>
+          <section className="flex gap-x-3">
+            <button
+              type="button"
+              onClick={() => setItemsData([...itemsData, createItemData()])}
+              className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
+            >
+              Add new item
+            </button>
+            <button
+              type="submit"
+              className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
+            >
+              Submit image
+            </button>
+          </section>
+        </form>
+      ) : (
+        <div className="w-full text-center text-sm text-gray-600 pt-30">
+          Admin pass required to add images
         </div>
-        <div>
-          <label htmlFor="imageUrl" className="mt-3">
-            URL
-          </label>
-          <input
-            className="w-full"
-            type="url"
-            name="imageUrl"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            required
-          />
-          {errors.find((error) => error.path === "imageUrl") &&
-            showErrorFor("imageUrl")}
-        </div>
-        <h2>Specify items to find</h2>
-        {itemFieldsets}
-        <section className="flex items-center mb-4 gap-2">
-          <label htmlFor="publishImage">Publish Now?</label>
-          <input
-            type="checkbox"
-            id="publishImage"
-            checked={published}
-            onChange={() => setPublished(!published)}
-          />
-        </section>
-        <section className="flex gap-x-3">
-          <button
-            type="button"
-            onClick={() => setItemsData([...itemsData, createItemData()])}
-            className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
-          >
-            Add new item
-          </button>
-          <button
-            type="submit"
-            className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
-          >
-            Submit image
-          </button>
-        </section>
-      </form>
+      )}
     </>
   );
 }

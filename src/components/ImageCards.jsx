@@ -4,6 +4,8 @@ export default function ImageCards() {
   const [images, setImages] = useState([]);
   const [reload, setReload] = useState(false);
   const userToken = localStorage.getItem("findXToken");
+  const loggedInUserJson = localStorage.getItem("findXUserData");
+  const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
 
   async function deleteImage(imageId) {
@@ -87,5 +89,15 @@ export default function ImageCards() {
     getImages();
   }, [reload]);
 
-  return <article>{images.length ? createImageCards(images) : ""}</article>;
+  return (
+    <article>
+      {images.length && loggedInUser.status === "ADMIN" ? (
+        createImageCards(images)
+      ) : (
+        <div className="w-full text-center text-sm text-gray-600 pt-30">
+          No images available
+        </div>
+      )}
+    </article>
+  );
 }
