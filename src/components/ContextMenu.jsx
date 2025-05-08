@@ -57,8 +57,8 @@ export default function ContextMenu({
         imageClientY >= menuItem?.startY * imageRect.height &&
         imageClientY <= menuItem?.endY * imageRect.height
       ) {
-        const itemX = (menuItem.centerX * imageRect.width) + imageRect.left; // prettier-ignore
-        const itemY = (menuItem.centerY * imageRect.height) + imageRect.top; // prettier-ignore
+        const itemX = menuItem.centerX * imageRect.width;
+        const itemY = menuItem.centerY * imageRect.height;
         const newImageItems = imageItems.filter(
           (item) => item.itemName !== clickedMenu.itemName
         );

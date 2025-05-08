@@ -41,12 +41,14 @@ export default function ItemChoiceFeedback({
   }
 
   return (
-    <div
-      ref={itemChoiceFeedbackRef}
-      className="fixed z-50 rounded-sm p-4 text-center top-20 bg-white"
-      style={{ backgroundColor, color, display }}
-    >
-      {messageToDisplay}
-    </div>
+    <article className="fixed top-20 z-50 w-full">
+      <div
+        ref={itemChoiceFeedbackRef}
+        className="mx-auto p-4 w-fit rounded-sm"
+        style={{ backgroundColor, color, display }}
+      >
+        {messageToDisplay}
+      </div>
+    </article>
   );
 }

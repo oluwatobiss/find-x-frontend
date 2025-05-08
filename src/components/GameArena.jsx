@@ -67,10 +67,7 @@ export default function GameArena() {
   }, []);
 
   return (
-    <div
-      id="game-arena"
-      className="relative h-full flex justify-center items-center"
-    >
+    <div id="game-arena" className="relative h-full">
       {gameResult.show && <ResultModal text={gameResult.text} />}
       <ItemChoiceFeedback
         itemChoiceFeedbackRef={itemChoiceFeedbackRef}
