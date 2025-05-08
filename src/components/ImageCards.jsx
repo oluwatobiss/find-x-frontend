@@ -26,7 +26,7 @@ export default function ImageCards() {
 
   async function editImage(image) {
     localStorage.setItem("findXImageToEdit", JSON.stringify(image));
-    window.location.href = "/update-image";
+    window.location.href = "/edit-image";
   }
 
   function createImageCards(images) {

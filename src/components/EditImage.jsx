@@ -57,7 +57,7 @@ export default function UpdateImage() {
 
       imageDataResponse.errors?.length
         ? setErrors(imageDataResponse.errors)
-        : (window.location.href = "/");
+        : (window.location.href = "/dashboard/");
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
