@@ -24,24 +24,20 @@ export default function Navigation() {
 
   return (
     <>
-      <div className="text-center [&_a,&_button]:px-4 [&_a,&_button]:py-5 [&_a,&_button]:text-xl [&_a,&_button]:font-bold [&_a,&_button]:uppercase [&_a,&_button]:text-blue-700 [&_a,&_button]:hover:bg-orange-300 [&_a,&_button]:focus:bg-orange-300 [&_button]:cursor-pointer">
+      <div className="flex justify-between [&_a]:inline-block [&_a,&_button]:px-4 [&_a,&_button]:py-5 [&_a,&_button]:text-xl [&_a,&_button]:font-bold [&_a,&_button]:uppercase [&_a,&_button]:text-blue-700 [&_a,&_button]:hover:bg-orange-300 [&_a,&_button]:focus:bg-orange-300 [&_button]:cursor-pointer">
         <a href="/">Find-X</a>
-        {!userStatus && <a href="/sign-up">Sign up</a>}
-        {!userToken && <a href="/log-in">Log in</a>}
         {userToken && userStatus === "ADMIN" && (
-          <>
-            <a href="/dashboard/">Dashboard</a>
-            <a href="/manage-users/">Manage users</a>
-          </>
+          <a href="/dashboard/">Dashboard</a>
         )}
-        {userToken && (
-          <>
-            <a href="/leaderboard/">Leaderboard</a>
+        <span>
+          {!userStatus && <a href="/sign-up">Sign up</a>}
+          {!userToken && <a href="/log-in">Log in</a>}
+          {userToken && (
             <button type="button" onClick={logoutUser}>
               Log out
             </button>
-          </>
-        )}
+          )}
+        </span>
       </div>
     </>
   );

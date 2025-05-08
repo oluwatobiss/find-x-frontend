@@ -1,0 +1,13 @@
+---
+import ImageCards from "../components/ImageCards";
+import Layout from "../layouts/Layout.astro";
+const pageTitle = "All images | Find X";
+---
+
+<Layout pageTitle={pageTitle}>
+  <div class="flex justify-between items-center">
+    <h1>All images</h1>
+    <a href="/add-image" class="hover:text-blue-700">Add image</a>
+  </div>
+  <ImageCards client:only="react" />
+</Layout>

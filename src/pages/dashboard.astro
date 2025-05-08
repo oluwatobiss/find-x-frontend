@@ -1,13 +1,18 @@
 ---
-import ImageCards from "../components/ImageCards";
 import Layout from "../layouts/Layout.astro";
-const pageTitle = "All images | Find X";
+const pageTitle = "Dashboard | Find X";
 ---
 
 <Layout pageTitle={pageTitle}>
-  <div class="flex justify-between items-center">
-    <h1>All images</h1>
-    <a href="/add-image" class="hover:text-blue-700">Add image</a>
-  </div>
-  <ImageCards client:only="react" />
+  <ul class="text-center">
+    <li class="py-2">
+      <a href="/users/" class="hover:text-blue-800">Users</a>
+    </li>
+    <li class="py-2">
+      <a href="/images/" class="hover:text-blue-800">Images</a>
+    </li>
+    <li class="py-2">
+      <a href="/leaderboard/" class="hover:text-blue-800">Leaderboard</a>
+    </li>
+  </ul>
 </Layout>
