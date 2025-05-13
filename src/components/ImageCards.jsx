@@ -18,9 +18,7 @@ export default function ImageCards() {
         setReload(!reload);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 
@@ -32,11 +30,6 @@ export default function ImageCards() {
   function createImageCards(images) {
     const userDataJson = localStorage.getItem("findXUserData");
     const userData = userDataJson && JSON.parse(userDataJson);
-
-    console.log("=== createImageCards ===");
-    console.log(images);
-    console.log(userData);
-
     return images.map((image) => {
       return (
         <div
@@ -70,6 +63,7 @@ export default function ImageCards() {
   }
 
   useEffect(() => {
+    let ignore = false;
     async function getImages() {
       try {
         const response = await fetch(
@@ -79,17 +73,15 @@ export default function ImageCards() {
           }
         );
         const images = await response.json();
-        console.log("=== ImageCards ===");
-        console.log(images);
-
         setImages(images);
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        if (error instanceof Error) console.error(error.message);
       }
     }
     getImages();
+    return () => {
+      ignore = true;
+    };
   }, [reload]);
 
   return (

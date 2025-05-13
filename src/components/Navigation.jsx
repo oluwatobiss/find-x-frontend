@@ -13,10 +13,8 @@ export default function Navigation() {
   useEffect(() => {
     let userToken = localStorage.getItem("findXToken");
     let userDataJson = localStorage.getItem("findXUserData");
-
     userToken === "undefined" && (userToken = undefined);
     userDataJson === "undefined" && (userDataJson = undefined);
-
     const userData = userDataJson && JSON.parse(userDataJson);
     userToken && setUserToken(userToken);
     userData?.status && setUserStatus(userData.status);

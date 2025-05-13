@@ -23,9 +23,7 @@ export default function LoginForm() {
         ? setErrors(userData.errors)
         : (window.location.href = "/");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 

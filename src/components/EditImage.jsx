@@ -10,9 +10,6 @@ export default function UpdateImage() {
   const [published, setPublished] = useState(imageData.published);
   const [errors, setErrors] = useState([]);
 
-  console.log("=== UpdateImage ===");
-  console.log(sample);
-
   function createItemData() {
     return {
       id: crypto.randomUUID(),
@@ -29,9 +26,6 @@ export default function UpdateImage() {
 
   async function submitImageDataUpdates(e) {
     e.preventDefault();
-
-    console.log({ imageName, imageUrl, sample, itemsData, published });
-
     try {
       const userToken = localStorage.getItem("findXToken");
       const response = await fetch(
@@ -52,16 +46,11 @@ export default function UpdateImage() {
         }
       );
       const imageDataResponse = await response.json();
-      console.log("=== submitImageDataUpdates in AddImage component ===");
-      console.log(imageDataResponse);
-
       imageDataResponse.errors?.length
         ? setErrors(imageDataResponse.errors)
         : (window.location.href = "/dashboard/");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 

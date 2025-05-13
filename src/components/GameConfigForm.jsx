@@ -8,10 +8,6 @@ export default function GameConfigForm() {
   const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
 
-  console.log("=== GameConfigForm ===");
-  console.log(loggedInUser);
-  console.log(Boolean(loggedInUser));
-
   async function startGame() {
     const gameImg = images[imageIndex];
     localStorage.setItem(
@@ -43,6 +39,7 @@ export default function GameConfigForm() {
   ));
 
   useEffect(() => {
+    let ignore = false;
     async function getImages() {
       try {
         const response = await fetch(
@@ -52,17 +49,15 @@ export default function GameConfigForm() {
           }
         );
         const images = await response.json();
-        console.log("=== ImageCards ===");
-        console.log(images);
-
         setImages(images);
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        if (error instanceof Error) console.error(error.message);
       }
     }
     getImages();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (

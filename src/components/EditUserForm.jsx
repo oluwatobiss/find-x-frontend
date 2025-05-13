@@ -37,16 +37,11 @@ export default function EditUserForm() {
         }
       );
       const userDataResponse = await response.json();
-      console.log("=== updateUser in EditUserForm component ===");
-      console.log(userDataResponse);
-
       userDataResponse.errors?.length
         ? setErrors(userDataResponse.errors)
         : (window.location.href = "/dashboard/");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 

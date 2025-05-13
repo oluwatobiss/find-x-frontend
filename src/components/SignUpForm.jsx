@@ -30,16 +30,11 @@ export default function SignUpForm() {
         }
       );
       const userData = await response.json();
-      console.log("=== registerUser in SignUpForm component ===");
-      console.log(userData);
-
       userData.errors?.length
         ? setErrors(userData.errors)
         : (window.location.href = "/");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 

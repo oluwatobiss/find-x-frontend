@@ -33,6 +33,28 @@ export default function ContextMenu({
     targetingBoxRef.current.classList.add("invisible");
   }
 
+  if (imageItemsRef.current && !menuItemsSet.current) {
+    const menuItems = imageItemsRef.current.map((item) => {
+      return (
+        <div
+          className="flex items-center h-[40px] px-[13px] text-[#eee] cursor-pointer rounded-sm hover:bg-[#343434]"
+          data-menu-item-name={item.itemName}
+          key={crypto.randomUUID()}
+          onClick={recordClickedMenu}
+        >
+          <img
+            alt={item.itemName}
+            src={item.itemImageUrl}
+            className="w-[15%]"
+          />
+          <span className="pl-[15px]">{item.itemName}</span>
+        </div>
+      );
+    });
+    setMenuItems(menuItems);
+    menuItemsSet.current = true;
+  }
+
   useEffect(() => {
     let ignore = false;
     if (menuClicked.current) {
@@ -68,18 +90,12 @@ export default function ContextMenu({
         imageItemsRef.current = newImageItems;
         if (newImageItems.length === 0) {
           pause();
-          console.log("=== All items found!!! ===");
-          console.log({ hours, minutes, seconds });
           async function checkIfPlayerMadeTopTen() {
             try {
               const userToken = localStorage.getItem("findXToken");
               const loggedInUserJson = localStorage.getItem("findXUserData");
               const loggedInUser =
                 loggedInUserJson && JSON.parse(loggedInUserJson);
-
-              console.log("== User is logged in??? ===");
-              console.log(loggedInUser);
-
               const response = await fetch(
                 `${import.meta.env.PUBLIC_BACKEND_URI}/leaders`,
                 {
@@ -99,17 +115,11 @@ export default function ContextMenu({
                 }
               );
               const leader = await response.json();
-
-              console.log("== leader Response ===");
-              console.log(leader);
-
               leader
                 ? setGameResult({ show: true, text: "congrats" })
                 : setGameResult({ show: true, text: "oops" });
             } catch (error) {
-              if (error instanceof Error) {
-                console.error(error.message);
-              }
+              if (error instanceof Error) console.error(error.message);
             }
           }
           checkIfPlayerMadeTopTen();
@@ -124,28 +134,6 @@ export default function ContextMenu({
       ignore = true;
     };
   }, [clickedMenu]);
-
-  if (imageItemsRef.current && !menuItemsSet.current) {
-    const menuItems = imageItemsRef.current.map((item) => {
-      return (
-        <div
-          className="flex items-center h-[40px] px-[13px] text-[#eee] cursor-pointer rounded-sm hover:bg-[#343434]"
-          data-menu-item-name={item.itemName}
-          key={crypto.randomUUID()}
-          onClick={recordClickedMenu}
-        >
-          <img
-            alt={item.itemName}
-            src={item.itemImageUrl}
-            className="w-[15%]"
-          />
-          <span className="pl-[15px]">{item.itemName}</span>
-        </div>
-      );
-    });
-    setMenuItems(menuItems);
-    menuItemsSet.current = true;
-  }
 
   return (
     <article

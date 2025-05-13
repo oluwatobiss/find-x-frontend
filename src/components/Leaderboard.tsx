@@ -12,7 +12,6 @@ export default function Leaderboard() {
   const [top10leaders, setTop10leaders] = useState<[] | { message: "" }>([]);
   const userToken = localStorage.getItem("findXToken");
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
-
   const nodeToShow = Array.isArray(top10leaders) ? (
     <table className="w-full">
       <thead className="border-b">
@@ -60,24 +59,22 @@ export default function Leaderboard() {
   );
 
   useEffect(() => {
+    let ignore = false;
     async function top10leaders() {
       try {
         const response = await fetch(`${backendUri}/leaders`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
         const top10leaders = await response.json();
-
-        console.log("=== Leaderboard fetch response ===");
-        console.log(top10leaders);
-
         setTop10leaders(top10leaders);
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        if (error instanceof Error) console.error(error.message);
       }
     }
     top10leaders();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return nodeToShow;

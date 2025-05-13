@@ -10,9 +10,6 @@ export default function AddImage() {
   const loggedInUserJson = localStorage.getItem("findXUserData");
   const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
 
-  console.log("=== AddImage ===");
-  console.log(sample);
-
   function createItemData() {
     return {
       id: crypto.randomUUID(),
@@ -29,9 +26,6 @@ export default function AddImage() {
 
   async function submitImageData(e) {
     e.preventDefault();
-
-    console.log({ imageName, imageUrl, sample, itemsData, published });
-
     try {
       const userToken = localStorage.getItem("findXToken");
       const response = await fetch(
@@ -52,16 +46,11 @@ export default function AddImage() {
         }
       );
       const imageData = await response.json();
-      console.log("=== submitImageData in AddImage component ===");
-      console.log(imageData);
-
       imageData.errors?.length
         ? setErrors(imageData.errors)
         : (window.location.href = "/");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) onsole.error(error.message);
     }
   }
 

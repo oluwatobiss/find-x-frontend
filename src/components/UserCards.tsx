@@ -26,9 +26,7 @@ export default function UserCards() {
       });
       setReload(!reload);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      if (error instanceof Error) console.error(error.message);
     }
   }
 
@@ -40,7 +38,6 @@ export default function UserCards() {
   function createUserCards(users: User[]) {
     const userDataJson = localStorage.getItem("findXUserData");
     const userData = userDataJson && JSON.parse(userDataJson);
-
     return users.map((user) => {
       return (
         <div
@@ -69,10 +66,8 @@ export default function UserCards() {
   }
 
   useEffect(() => {
+    let ignore = false;
     async function getUsers() {
-      console.log("=== getUsers ===");
-      console.log(loggedInUser.status);
-
       try {
         const response = await fetch(
           `${backendUri}/users/?status=${loggedInUser.status}`,
@@ -87,12 +82,13 @@ export default function UserCards() {
               throw new Error(users.message);
             })();
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        if (error instanceof Error) console.error(error.message);
       }
     }
     getUsers();
+    return () => {
+      ignore = true;
+    };
   }, [reload]);
 
   return (

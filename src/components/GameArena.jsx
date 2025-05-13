@@ -50,6 +50,7 @@ export default function GameArena() {
   }
 
   useEffect(() => {
+    let ignore = false;
     async function getImageItemsData() {
       try {
         const response = await fetch(`${backendUri}/images/${gameImage?.id}`, {
@@ -58,12 +59,13 @@ export default function GameArena() {
         const imageItemsData = await response.json();
         imageItemsRef.current = imageItemsData;
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        if (error instanceof Error) console.error(error.message);
       }
     }
     getImageItemsData();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (
