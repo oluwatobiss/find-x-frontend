@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Confetti from "react-confetti";
 import ResultModal from "./ResultModal";
 import ItemChoiceFeedback from "./ItemChoiceFeedback";
 import ContextMenu from "./ContextMenu";
@@ -70,6 +71,11 @@ export default function GameArena() {
 
   return (
     <div id="game-arena" className="relative h-full">
+      {gameResult.show && gameResult.text === "congrats" && (
+        <div className="fixed z-70">
+          <Confetti />
+        </div>
+      )}
       {gameResult.show && <ResultModal text={gameResult.text} />}
       <ItemChoiceFeedback
         itemChoiceFeedbackRef={itemChoiceFeedbackRef}

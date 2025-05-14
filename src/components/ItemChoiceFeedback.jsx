@@ -11,7 +11,7 @@ export default function ItemChoiceFeedback({
   let display = "none";
   let color = "";
 
-  if (itemChoiceFeedbackVisibilityRef.current && itemFound.itemFound === true) {
+  if (itemChoiceFeedbackVisibilityRef.current && itemFound.itemFound) {
     clearTimeout(previousTimeout.current);
     messageToDisplay = `Yep! You found the ${itemFound.clickedMenu}. 👏`;
     backgroundColor = "#edf7ed";
@@ -23,10 +23,7 @@ export default function ItemChoiceFeedback({
     }, 3000);
   }
 
-  if (
-    itemChoiceFeedbackVisibilityRef.current &&
-    itemFound.itemFound === false
-  ) {
+  if (itemChoiceFeedbackVisibilityRef.current && !itemFound.itemFound) {
     clearTimeout(previousTimeout.current);
     messageToDisplay = `Nope. That's not the ${itemFound.clickedMenu}.`;
     backgroundColor = "#fdeded";
