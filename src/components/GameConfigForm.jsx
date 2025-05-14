@@ -43,7 +43,7 @@ export default function GameConfigForm() {
     async function getImages() {
       try {
         const response = await fetch(
-          `${backendUri}/images/?auth=${Boolean(loggedInUser)}`,
+          `${backendUri}/images/?auth=${loggedInUser.status}`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }

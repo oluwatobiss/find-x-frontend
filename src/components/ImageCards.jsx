@@ -42,8 +42,11 @@ export default function ImageCards() {
             className="pr-7 w-3xs"
           />
           <span className="[&_button]:px-6 [&_button]:py-1.5 [&_button]:border [&_button]:rounded-sm [&_button]:border-gray-400 [&_button]:bg-gray-100 [&_button]:hover:bg-gray-200 [&_button]:text-sm [&_button]:text-gray-800 [&_button]:cursor-pointer">
-            <span className="inline-block mb-2 px-4 py-1 border rounded-sm border-gray-600 text-xs text-gray-600">
+            <span className="inline-block mr-2 mb-2 px-4 py-1 border rounded-sm border-gray-600 text-xs text-gray-600">
               {image.published ? "published" : "draft"}
+            </span>
+            <span className="inline-block mb-2 px-4 py-1 border rounded-sm border-gray-600 text-xs text-gray-600">
+              {image.sample ? "sample" : "pro"}
             </span>
             <h3 className="text-2xl font-bold mb-3">{image.imageName}</h3>
             <button
@@ -67,7 +70,7 @@ export default function ImageCards() {
     async function getImages() {
       try {
         const response = await fetch(
-          `${backendUri}/images?auth=${Boolean(loggedInUser)}`,
+          `${backendUri}/images/?auth=${loggedInUser.status}`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
