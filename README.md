@@ -1,48 +1,138 @@
-# Astro Starter Kit: Basics
+# Find X Website
 
-```sh
-npm create astro@latest -- --template basics
+This is the official website of the Find X game. Find X is a photo tagging game ([Where's Wally?](https://en.wikipedia.org/wiki/Where%27s_Wally%3F)) that presents users with a busy and crowded illustration containing many different people, objects, or places. The User's task is to find specified characters hidden in the illustration.
+
+## Pages
+
+- **Homepage:**
+  - Welcome user
+  - User login/signup/logout UI
+  - Game configuration
+  - Play UI
+  - Dashboard navigation (admin-only)
+- **Game page:**
+  - No navbar
+  - Image only
+- **Signup:**
+  - First name
+  - Last name
+  - Username (unique)
+  - Email (unique)
+  - Password
+  - Admin confirmation
+- **Login:**
+  - Email
+  - Password
+- **Dashboard (admin-only):**
+  - Images link
+  - Leaderboard link
+  - Users link
+- **Images (admin-only):**
+  - List all images
+  - UI to add new image
+  - UI to edit each image
+  - UI to delete each item
+- **Add Image (admin-only):**
+  - Name (unique)
+  - URL (unique)
+  - Sample image confirmation
+  - Item to find information: Name, Image's URL and Position (center-x, center-y, start-x, start-y, end-x, end-y)
+  - UI to add more items
+  - UI to delete each item
+  - UI to submit image
+- **Update Image (admin-only):**
+  - Name (unique)
+  - URL (unique)
+  - Sample image confirmation
+  - Item to find information: Name, Image's URL and Position (center-x, center-y, start-x, start-y, end-x, end-y)
+  - UI to add more items
+  - UI to delete each item
+  - UI to submit image
+- **Leaderboard:**
+  - Top 10 records
+  - Play Game UI
+- **Users (admin-only):**
+  - List all users
+  - UI to edit each user's data
+  - UI to delete each user's data
+- **Update User (admin-only):**
+  - First name
+  - Last name
+  - Username (unique)
+  - Email (unique)
+  - Admin confirmation
+
+## Users and privileges
+
+- **Guest:** Unauthenticated user (Low-level privileges)
+- **Gamer:** Authenticated user (Mid-level privileges)
+- **Admin:** An administrator (All privileges)
+
+| Privilege                | Guest | Gamer | Admin |
+| ------------------------ | ----- | ----- | ----- |
+| Create an account        | Yes   | Yes   | Yes   |
+| Play game                | Yes   | Yes   | Yes   |
+| Add image                | No    | No    | Yes   |
+| Update images            | No    | No    | Yes   |
+| Access all images        | No    | Yes   | Yes   |
+| Access leaderboard       | No    | Yes   | Yes   |
+| Access dashboard         | No    | No    | Yes   |
+| Add name to leaderboard  | No    | Yes   | Yes   |
+| Add score to leaderboard | Yes   | Yes   | Yes   |
+| Manage users             | No    | No    | Yes   |
+| Delete accounts          | No    | No    | Yes   |
+
+## Technologies used
+
+- Astro
+- React
+- Tailwind CSS
+- React timer hook
+
+## Usage
+
+> **Note:** [The backend](https://github.com/oluwatobiss/find-x-backend) must be running for this website to function appropriately.
+
+1. Clone the project
+
+```bash
+git clone https://github.com/oluwatobiss/find-x-frontend.git
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+2. Navigate into the project repo
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+cd find-x-frontend
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+3. Install dependencies
 
-## 🧞 Commands
+```bash
+npm install
+```
 
-All commands are run from the root of the project, from a terminal:
+4. Create an environment variable file
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```bash
+touch .env
+```
 
-## 👀 Want to learn more?
+5. Define the project's environment variables
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```
+PUBLIC_BACKEND_URI="http://localhost:3000"
+```
+
+6. Start the server
+
+```bash
+npm run dev
+```
+
+## Live Demo
+
+- https://find-x.netlify.app/
+
+## Related Repos
+
+- [Find X Rest API](https://github.com/oluwatobiss/find-x-backend)
