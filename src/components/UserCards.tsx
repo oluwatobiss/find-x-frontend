@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 type User = {
   id: number;
@@ -15,16 +16,21 @@ export default function UserCards() {
   const loggedInUserJson = localStorage.getItem("findXUserData");
   const loggedInUser = loggedInUserJson && JSON.parse(loggedInUserJson);
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [reload, setReload] = useState(false);
 
   async function deleteUser(userId: number) {
     try {
-      await fetch(`${backendUri}/users/${userId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
-      setReload(!reload);
+      if (confirm("Delete user permanently?")) {
+        setLoading(true);
+        await fetch(`${backendUri}/users/${userId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+        setReload(!reload);
+        setLoading(false);
+      }
     } catch (error) {
       if (error instanceof Error) console.error(error.message);
     }
@@ -69,6 +75,7 @@ export default function UserCards() {
     let ignore = false;
     async function getUsers() {
       try {
+        setLoading(true);
         const response = await fetch(
           `${backendUri}/users/?status=${loggedInUser.status}`,
           {
@@ -81,6 +88,7 @@ export default function UserCards() {
           : (() => {
               throw new Error(users.message);
             })();
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) console.error(error.message);
       }
@@ -93,6 +101,7 @@ export default function UserCards() {
 
   return (
     <article>
+      {loading && <Loader />}
       {users.length ? (
         createUserCards(users)
       ) : (

@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
+import Loader from "./Loader";
 
 export default function UpdateImage() {
   const imageDataJson = useRef(localStorage.getItem("findXImageToEdit"));
   const imageData = imageDataJson.current && JSON.parse(imageDataJson.current);
+  const [loading, setLoading] = useState(false);
   const [imageName, setImageName] = useState(imageData.imageName);
   const [imageUrl, setImageUrl] = useState(imageData.imageUrl);
   const [sample, setSample] = useState(imageData.sample);
@@ -27,6 +29,7 @@ export default function UpdateImage() {
   async function submitImageDataUpdates(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       const userToken = localStorage.getItem("findXToken");
       const response = await fetch(
         `${import.meta.env.PUBLIC_BACKEND_URI}/images/${imageData.id}`,
@@ -46,6 +49,7 @@ export default function UpdateImage() {
         }
       );
       const imageDataResponse = await response.json();
+      setLoading(false);
       imageDataResponse.errors?.length
         ? setErrors(imageDataResponse.errors)
         : (window.location.href = "/dashboard/");
@@ -207,6 +211,7 @@ export default function UpdateImage() {
 
   return (
     <>
+      {loading && <Loader />}
       <form
         className="[&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm"
         onSubmit={submitImageDataUpdates}

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import Loader from "./Loader";
 
 export default function GameConfigForm() {
+  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState([]);
   const [imageIndex, setImageIndex] = useState("0");
   const userToken = localStorage.getItem("findXToken");
@@ -42,14 +44,16 @@ export default function GameConfigForm() {
     let ignore = false;
     async function getImages() {
       try {
+        setLoading(true);
         const response = await fetch(
-          `${backendUri}/images/?auth=${loggedInUser.status}`,
+          `${backendUri}/images/?auth=${loggedInUser?.status}`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
         );
         const images = await response.json();
         setImages(images);
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) console.error(error.message);
       }
@@ -62,6 +66,7 @@ export default function GameConfigForm() {
 
   return (
     <>
+      {loading && <Loader />}
       <fieldset className="my-15 border border-gray-500 rounded-sm px-10 py-7 text-center">
         <legend className="px-2 uppercase text-gray-500 font-semibold">
           Select an Image

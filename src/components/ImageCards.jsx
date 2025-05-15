@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 export default function ImageCards() {
+  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState([]);
   const [reload, setReload] = useState(false);
   const userToken = localStorage.getItem("findXToken");
@@ -11,11 +13,13 @@ export default function ImageCards() {
   async function deleteImage(imageId) {
     try {
       if (confirm("Delete the image permanently?")) {
+        setLoading(true);
         await fetch(`${backendUri}/images/${imageId}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${userToken}` },
         });
         setReload(!reload);
+        setLoading(false);
       }
     } catch (error) {
       if (error instanceof Error) console.error(error.message);
@@ -69,6 +73,7 @@ export default function ImageCards() {
     let ignore = false;
     async function getImages() {
       try {
+        setLoading(true);
         const response = await fetch(
           `${backendUri}/images/?auth=${loggedInUser.status}`,
           {
@@ -77,6 +82,7 @@ export default function ImageCards() {
         );
         const images = await response.json();
         setImages(images);
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) console.error(error.message);
       }
@@ -89,6 +95,7 @@ export default function ImageCards() {
 
   return (
     <article>
+      {loading && <Loader />}
       {images.length && loggedInUser.status === "ADMIN" ? (
         createImageCards(images)
       ) : (

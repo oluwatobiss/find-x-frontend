@@ -1,6 +1,8 @@
 import { useState } from "react";
+import Loader from "./Loader";
 
 export default function SignUpForm() {
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -13,6 +15,7 @@ export default function SignUpForm() {
   async function registerUser(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         `${import.meta.env.PUBLIC_BACKEND_URI}/users`,
         {
@@ -30,6 +33,7 @@ export default function SignUpForm() {
         }
       );
       const userData = await response.json();
+      setLoading(false);
       userData.errors?.length
         ? setErrors(userData.errors)
         : (window.location.href = "/");
@@ -54,120 +58,123 @@ export default function SignUpForm() {
   }
 
   return (
-    <form
-      className="[&_.text-input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_.text-input-label]:mt-3"
-      onSubmit={registerUser}
-    >
-      <div>
-        <label className="text-input-label" htmlFor="firstName">
-          First name
-        </label>
-        <input
-          className="text-input"
-          type="text"
-          name="firstName"
-          id="firstName"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        {showErrorFor("firstName")}
-      </div>
-      <div>
-        <label className="text-input-label" htmlFor="lastName">
-          Last name
-        </label>
-        <input
-          className="text-input"
-          type="text"
-          name="lastName"
-          id="lastName"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-        {showErrorFor("lastName")}
-      </div>
-      <div>
-        <label className="text-input-label" htmlFor="username">
-          Username
-        </label>
-        <input
-          className="text-input"
-          type="text"
-          name="username"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        {showErrorFor("username")}
-      </div>
-      <div>
-        <label className="text-input-label" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="text-input"
-          type="email"
-          name="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        {showErrorFor("email")}
-      </div>
-      <div>
-        <label className="text-input-label" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="text-input"
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {showErrorFor("password")}
-      </div>
-      <div className="mt-3 flex items-center gap-3">
-        <label htmlFor="adminCheckbox">Admin?</label>
-        <input
-          className="w-[initial]"
-          type="checkbox"
-          id="adminCheckbox"
-          checked={admin}
-          onChange={() => setAdmin(!admin)}
-        />
-      </div>
-      {admin ? (
+    <>
+      {loading && <Loader />}
+      <form
+        className="[&_.text-input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_.text-input-label]:mt-3"
+        onSubmit={registerUser}
+      >
         <div>
-          <label className="text-input-label" htmlFor="adminCode">
-            Enter your passcode:
+          <label className="text-input-label" htmlFor="firstName">
+            First name
+          </label>
+          <input
+            className="text-input"
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+          {showErrorFor("firstName")}
+        </div>
+        <div>
+          <label className="text-input-label" htmlFor="lastName">
+            Last name
+          </label>
+          <input
+            className="text-input"
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          {showErrorFor("lastName")}
+        </div>
+        <div>
+          <label className="text-input-label" htmlFor="username">
+            Username
+          </label>
+          <input
+            className="text-input"
+            type="text"
+            name="username"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          {showErrorFor("username")}
+        </div>
+        <div>
+          <label className="text-input-label" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="text-input"
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          {showErrorFor("email")}
+        </div>
+        <div>
+          <label className="text-input-label" htmlFor="password">
+            Password
           </label>
           <input
             className="text-input"
             type="password"
-            name="adminCode"
-            id="adminCode"
-            value={adminCode}
-            onChange={updateAdminCode}
+            name="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {showErrorFor("adminCode")}
+          {showErrorFor("password")}
         </div>
-      ) : (
-        ""
-      )}
-      <button
-        type="submit"
-        className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
-      >
-        Sign up
-      </button>
-    </form>
+        <div className="mt-3 flex items-center gap-3">
+          <label htmlFor="adminCheckbox">Admin?</label>
+          <input
+            className="w-[initial]"
+            type="checkbox"
+            id="adminCheckbox"
+            checked={admin}
+            onChange={() => setAdmin(!admin)}
+          />
+        </div>
+        {admin ? (
+          <div>
+            <label className="text-input-label" htmlFor="adminCode">
+              Enter your passcode:
+            </label>
+            <input
+              className="text-input"
+              type="password"
+              name="adminCode"
+              id="adminCode"
+              value={adminCode}
+              onChange={updateAdminCode}
+              required
+            />
+            {showErrorFor("adminCode")}
+          </div>
+        ) : (
+          ""
+        )}
+        <button
+          type="submit"
+          className="cursor-pointer bg-gray-200 mt-3 px-7 py-2 border border-gray-400 border-solid rounded-sm"
+        >
+          Sign up
+        </button>
+      </form>
+    </>
   );
 }

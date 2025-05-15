@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Loader from "./Loader";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function authenticateUser(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         `${import.meta.env.PUBLIC_BACKEND_URI}/auths`,
         {
@@ -19,6 +22,7 @@ export default function LoginForm() {
       const userData = await response.json();
       localStorage.setItem("findXToken", userData.token);
       localStorage.setItem("findXUserData", JSON.stringify(userData.payload));
+      setLoading(false);
       userData.errors?.length
         ? setErrors(userData.errors)
         : (window.location.href = "/");
@@ -39,6 +43,7 @@ export default function LoginForm() {
 
   return (
     <>
+      {loading && <Loader />}
       <form
         className="[&_input]:w-full [&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm [&_label]:mt-3"
         onSubmit={authenticateUser}

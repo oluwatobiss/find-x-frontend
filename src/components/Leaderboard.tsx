@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Loader from "./Loader";
 
 type LeaderParameter = {
   id: number;
@@ -9,6 +10,7 @@ type LeaderParameter = {
 };
 
 export default function Leaderboard() {
+  const [loading, setLoading] = useState(false);
   const [top10leaders, setTop10leaders] = useState<[] | { message: "" }>([]);
   const userToken = localStorage.getItem("findXToken");
   const backendUri = import.meta.env.PUBLIC_BACKEND_URI;
@@ -62,11 +64,13 @@ export default function Leaderboard() {
     let ignore = false;
     async function top10leaders() {
       try {
+        setLoading(true);
         const response = await fetch(`${backendUri}/leaders`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
         const top10leaders = await response.json();
         setTop10leaders(top10leaders);
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) console.error(error.message);
       }
@@ -77,5 +81,10 @@ export default function Leaderboard() {
     };
   }, []);
 
-  return nodeToShow;
+  return (
+    <>
+      {loading && <Loader />}
+      {nodeToShow}
+    </>
+  );
 }

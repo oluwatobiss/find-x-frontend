@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
+import Loader from "./Loader";
 import markItem from "../markItem";
 
 export default function ContextMenu({
@@ -13,6 +14,7 @@ export default function ContextMenu({
 }) {
   const menuItemsSet = useRef(false);
   const menuClicked = useRef(false);
+  const [loading, setLoading] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   const [clickedMenu, setClickedMenu] = useState({
     forceUpdateClickedMenu: true,
@@ -92,6 +94,7 @@ export default function ContextMenu({
           pause();
           async function checkIfPlayerMadeTopTen() {
             try {
+              setLoading(true);
               const userToken = localStorage.getItem("findXToken");
               const loggedInUserJson = localStorage.getItem("findXUserData");
               const loggedInUser =
@@ -115,6 +118,7 @@ export default function ContextMenu({
                 }
               );
               const leader = await response.json();
+              setLoading(false);
               leader
                 ? setGameResult({ show: true, text: "congrats" })
                 : setGameResult({ show: true, text: "oops" });
@@ -136,18 +140,21 @@ export default function ContextMenu({
   }, [clickedMenu]);
 
   return (
-    <article
-      ref={contextMenuRef}
-      id="context-menu"
-      className="fixed z-50 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
-    >
-      <section className="py-[7px] px-[13px] flex justify-between">
-        <span className="text-[#eee]">Find...</span>
-        <span title="Close" className="cursor-pointer">
-          ❌
-        </span>
-      </section>
-      <section>{menuItems}</section>
-    </article>
+    <>
+      {loading && <Loader />}
+      <article
+        ref={contextMenuRef}
+        id="context-menu"
+        className="fixed z-50 w-[200px] bg-[#1b1a1a] rounded-sm invisible"
+      >
+        <section className="py-[7px] px-[13px] flex justify-between">
+          <span className="text-[#eee]">Find...</span>
+          <span title="Close" className="cursor-pointer">
+            ❌
+          </span>
+        </section>
+        <section>{menuItems}</section>
+      </article>
+    </>
   );
 }

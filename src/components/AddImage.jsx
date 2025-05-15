@@ -1,6 +1,8 @@
 import { useState } from "react";
+import Loader from "./Loader";
 
 export default function AddImage() {
+  const [loading, setLoading] = useState(false);
   const [imageName, setImageName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [sample, setSample] = useState(false);
@@ -27,6 +29,7 @@ export default function AddImage() {
   async function submitImageData(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       const userToken = localStorage.getItem("findXToken");
       const response = await fetch(
         `${import.meta.env.PUBLIC_BACKEND_URI}/images`,
@@ -46,6 +49,7 @@ export default function AddImage() {
         }
       );
       const imageData = await response.json();
+      setLoading(false);
       imageData.errors?.length
         ? setErrors(imageData.errors)
         : (window.location.href = "/");
@@ -207,6 +211,7 @@ export default function AddImage() {
 
   return (
     <>
+      {loading && <Loader />}
       {loggedInUser.status === "ADMIN" ? (
         <form
           className="[&_input]:border [&_input]:border-gray-500 [&_input]:rounded-sm [&_input]:my-1 [&_input]:px-5 [&_input]:py-2 [&_input]:text-lg [&_label]:inline-block [&_label]:text-sm"
